@@ -32,40 +32,40 @@ void GeneratorWidget::SetupUi() {
 
     // Mode selector
     auto* mode_layout = new QHBoxLayout();
-    mode_layout->addWidget(new QLabel("Mode:"));
+    mode_layout->addWidget(new QLabel(QString::fromUtf8("\u6a21\u5f0f:")));
     mode_combo_ = new QComboBox();
-    mode_combo_->addItem("Quick");
-    mode_combo_->addItem("Manual");
+    mode_combo_->addItem(QString::fromUtf8("\u5feb\u901f"));
+    mode_combo_->addItem(QString::fromUtf8("\u624b\u52a8"));
     mode_layout->addWidget(mode_combo_);
     mode_layout->addStretch();
     main_layout->addLayout(mode_layout);
 
     // Quick mode group
-    quick_group_ = new QGroupBox("Quick Settings");
+    quick_group_ = new QGroupBox(QString::fromUtf8("\u5feb\u901f\u8bbe\u7f6e"));
     SetupQuickModeUi(quick_group_);
     main_layout->addWidget(quick_group_);
 
     // Manual mode group
-    manual_group_ = new QGroupBox("Manual Settings");
+    manual_group_ = new QGroupBox(QString::fromUtf8("\u624b\u52a8\u8bbe\u7f6e"));
     SetupManualModeUi(manual_group_);
     manual_group_->setVisible(false);
     main_layout->addWidget(manual_group_);
 
     // Common settings group
-    auto* common_group = new QGroupBox("Output");
+    auto* common_group = new QGroupBox(QString::fromUtf8("\u8f93\u51fa\u8bbe\u7f6e"));
     auto* common_layout = new QFormLayout(common_group);
     common_layout->setSpacing(4);
 
     seed_spin_ = new QSpinBox();
     seed_spin_->setRange(0, 999999);
     seed_spin_->setValue(0);
-    seed_spin_->setSpecialValueText("Auto");
-    common_layout->addRow("Seed:", seed_spin_);
+    seed_spin_->setSpecialValueText(QString::fromUtf8("\u81ea\u52a8"));
+    common_layout->addRow(QString::fromUtf8("\u968f\u673a\u79cd\u5b50:"), seed_spin_);
 
     count_spin_ = new QSpinBox();
     count_spin_->setRange(1, 100);
     count_spin_->setValue(1);
-    common_layout->addRow("Count:", count_spin_);
+    common_layout->addRow(QString::fromUtf8("\u751f\u6210\u6570\u91cf:"), count_spin_);
 
     auto* path_layout = new QHBoxLayout();
     output_edit_ = new QLineEdit();
@@ -74,7 +74,7 @@ void GeneratorWidget::SetupUi() {
     browse_button_->setFixedWidth(32);
     path_layout->addWidget(output_edit_);
     path_layout->addWidget(browse_button_);
-    common_layout->addRow("Path:", path_layout);
+    common_layout->addRow(QString::fromUtf8("\u8f93\u51fa\u8def\u5f84:"), path_layout);
 
     main_layout->addWidget(common_group);
 
@@ -85,7 +85,7 @@ void GeneratorWidget::SetupUi() {
     main_layout->addWidget(preview_label_);
 
     // Generate button
-    generate_button_ = new QPushButton("Generate");
+    generate_button_ = new QPushButton(QString::fromUtf8("\u751f\u6210"));
     generate_button_->setMinimumHeight(32);
     generate_button_->setStyleSheet("font-weight: bold;");
     main_layout->addWidget(generate_button_);
@@ -98,16 +98,16 @@ void GeneratorWidget::SetupQuickModeUi(QGroupBox* group) {
     layout->setSpacing(8);
 
     // Difficulty selection
-    auto* diff_label = new QLabel("Difficulty:");
+    auto* diff_label = new QLabel(QString::fromUtf8("\u96be\u5ea6:"));
     layout->addWidget(diff_label);
 
     auto* diff_layout = new QHBoxLayout();
     difficulty_button_group_ = new QButtonGroup(this);
 
-    easy_radio_ = new QRadioButton("Easy");
-    medium_radio_ = new QRadioButton("Medium");
-    hard_radio_ = new QRadioButton("Hard");
-    expert_radio_ = new QRadioButton("Expert");
+    easy_radio_ = new QRadioButton(QString::fromUtf8("\u7b80\u5355"));
+    medium_radio_ = new QRadioButton(QString::fromUtf8("\u4e2d\u7b49"));
+    hard_radio_ = new QRadioButton(QString::fromUtf8("\u56f0\u96be"));
+    expert_radio_ = new QRadioButton(QString::fromUtf8("\u4e13\u5bb6"));
 
     difficulty_button_group_->addButton(easy_radio_, 0);
     difficulty_button_group_->addButton(medium_radio_, 1);
@@ -123,15 +123,15 @@ void GeneratorWidget::SetupQuickModeUi(QGroupBox* group) {
     layout->addLayout(diff_layout);
 
     // Scale selection
-    auto* scale_label = new QLabel("Scale:");
+    auto* scale_label = new QLabel(QString::fromUtf8("\u89c4\u6a21:"));
     layout->addWidget(scale_label);
 
     auto* scale_layout = new QHBoxLayout();
     scale_button_group_ = new QButtonGroup(this);
 
-    small_radio_ = new QRadioButton("Small");
-    medium_scale_radio_ = new QRadioButton("Medium");
-    large_radio_ = new QRadioButton("Large");
+    small_radio_ = new QRadioButton(QString::fromUtf8("\u5c0f\u578b"));
+    medium_scale_radio_ = new QRadioButton(QString::fromUtf8("\u4e2d\u578b"));
+    large_radio_ = new QRadioButton(QString::fromUtf8("\u5927\u578b"));
 
     scale_button_group_->addButton(small_radio_, 0);
     scale_button_group_->addButton(medium_scale_radio_, 1);
@@ -154,28 +154,28 @@ void GeneratorWidget::SetupManualModeUi(QGroupBox* group) {
     n_spin_ = new QSpinBox();
     n_spin_->setRange(10, 2000);
     n_spin_->setValue(100);
-    scale_layout->addWidget(new QLabel("N:"));
+    scale_layout->addWidget(new QLabel(QString::fromUtf8("\u8ba2\u5355\u6570:")));
     scale_layout->addWidget(n_spin_);
 
     t_spin_ = new QSpinBox();
     t_spin_->setRange(5, 90);
     t_spin_->setValue(30);
-    scale_layout->addWidget(new QLabel("T:"));
+    scale_layout->addWidget(new QLabel(QString::fromUtf8("\u5468\u671f\u6570:")));
     scale_layout->addWidget(t_spin_);
 
     f_spin_ = new QSpinBox();
     f_spin_->setRange(2, 15);
     f_spin_->setValue(5);
-    scale_layout->addWidget(new QLabel("F:"));
+    scale_layout->addWidget(new QLabel(QString::fromUtf8("\u6d41\u5411\u6570:")));
     scale_layout->addWidget(f_spin_);
 
     g_spin_ = new QSpinBox();
     g_spin_->setRange(2, 15);
     g_spin_->setValue(5);
-    scale_layout->addWidget(new QLabel("G:"));
+    scale_layout->addWidget(new QLabel(QString::fromUtf8("\u7ec4\u522b\u6570:")));
     scale_layout->addWidget(g_spin_);
 
-    layout->addRow("Scale:", scale_layout);
+    layout->addRow(QString::fromUtf8("\u89c4\u6a21:"), scale_layout);
 
     // Capacity utilization
     capacity_spin_ = new QDoubleSpinBox();
@@ -183,13 +183,13 @@ void GeneratorWidget::SetupManualModeUi(QGroupBox* group) {
     capacity_spin_->setSingleStep(0.05);
     capacity_spin_->setValue(0.70);
     capacity_spin_->setDecimals(2);
-    layout->addRow("Capacity Util:", capacity_spin_);
+    layout->addRow(QString::fromUtf8("\u4ea7\u80fd\u5229\u7528\u7387:"), capacity_spin_);
 
     // Time window offset
     offset_spin_ = new QSpinBox();
     offset_spin_->setRange(1, 15);
     offset_spin_->setValue(5);
-    layout->addRow("Time Offset:", offset_spin_);
+    layout->addRow(QString::fromUtf8("\u65f6\u95f4\u7a97\u504f\u79fb:"), offset_spin_);
 
     // Demand CV
     demand_cv_spin_ = new QDoubleSpinBox();
@@ -197,7 +197,7 @@ void GeneratorWidget::SetupManualModeUi(QGroupBox* group) {
     demand_cv_spin_->setSingleStep(0.05);
     demand_cv_spin_->setValue(0.25);
     demand_cv_spin_->setDecimals(2);
-    layout->addRow("Demand CV:", demand_cv_spin_);
+    layout->addRow(QString::fromUtf8("\u9700\u6c42\u53d8\u5f02\u7cfb\u6570:"), demand_cv_spin_);
 
     // Peak ratio
     peak_ratio_spin_ = new QDoubleSpinBox();
@@ -205,7 +205,7 @@ void GeneratorWidget::SetupManualModeUi(QGroupBox* group) {
     peak_ratio_spin_->setSingleStep(0.05);
     peak_ratio_spin_->setValue(0.15);
     peak_ratio_spin_->setDecimals(2);
-    layout->addRow("Peak Ratio:", peak_ratio_spin_);
+    layout->addRow(QString::fromUtf8("\u9700\u6c42\u9ad8\u5cf0\u6bd4\u4f8b:"), peak_ratio_spin_);
 
     // Peak multiplier
     peak_mult_spin_ = new QDoubleSpinBox();
@@ -213,7 +213,7 @@ void GeneratorWidget::SetupManualModeUi(QGroupBox* group) {
     peak_mult_spin_->setSingleStep(0.25);
     peak_mult_spin_->setValue(2.0);
     peak_mult_spin_->setDecimals(2);
-    layout->addRow("Peak Mult:", peak_mult_spin_);
+    layout->addRow(QString::fromUtf8("\u9700\u6c42\u9ad8\u5cf0\u500d\u6570:"), peak_mult_spin_);
 
     // Urgent ratio
     urgent_spin_ = new QDoubleSpinBox();
@@ -221,7 +221,7 @@ void GeneratorWidget::SetupManualModeUi(QGroupBox* group) {
     urgent_spin_->setSingleStep(0.05);
     urgent_spin_->setValue(0.10);
     urgent_spin_->setDecimals(2);
-    layout->addRow("Urgent Ratio:", urgent_spin_);
+    layout->addRow(QString::fromUtf8("\u7d27\u6025\u8ba2\u5355\u6bd4\u4f8b:"), urgent_spin_);
 
     // Flexible ratio
     flexible_spin_ = new QDoubleSpinBox();
@@ -229,18 +229,18 @@ void GeneratorWidget::SetupManualModeUi(QGroupBox* group) {
     flexible_spin_->setSingleStep(0.05);
     flexible_spin_->setValue(0.20);
     flexible_spin_->setDecimals(2);
-    layout->addRow("Flexible Ratio:", flexible_spin_);
+    layout->addRow(QString::fromUtf8("\u7075\u6d3b\u8ba2\u5355\u6bd4\u4f8b:"), flexible_spin_);
 
     // Cost correlation
     cost_corr_check_ = new QCheckBox();
     cost_corr_check_->setChecked(true);
-    layout->addRow("Cost Corr:", cost_corr_check_);
+    layout->addRow(QString::fromUtf8("\u542f\u52a8-\u4ea7\u80fd\u5173\u8054:"), cost_corr_check_);
 
     // Zoom
     zoom_spin_ = new QSpinBox();
     zoom_spin_->setRange(30, 100);
     zoom_spin_->setValue(60);
-    layout->addRow("Zoom:", zoom_spin_);
+    layout->addRow(QString::fromUtf8("\u5bb9\u91cf\u7f29\u653e:"), zoom_spin_);
 }
 
 void GeneratorWidget::SetupConnections() {
@@ -287,7 +287,7 @@ void GeneratorWidget::OnScaleChanged() {
 
 void GeneratorWidget::OnBrowseOutput() {
     QString path = QFileDialog::getExistingDirectory(this,
-        "Select Output Directory",
+        QString::fromUtf8("\u9009\u62e9\u8f93\u51fa\u76ee\u5f55"),
         output_edit_->text());
 
     if (!path.isEmpty()) {
@@ -308,13 +308,13 @@ void GeneratorWidget::UpdatePreview() {
     double score = DifficultyMapper::EstimateDifficultyScore(config);
     QString gap = DifficultyMapper::EstimateGap(config);
 
-    QString preview = QString(
-        "N=%1  T=%2  F=%3  G=%4\n"
-        "capacity_util = %5\n"
-        "time_offset = %6\n"
-        "demand_cv = %7\n"
-        "difficulty_score = %8\n"
-        "estimated_gap = %9")
+    QString preview = QString::fromUtf8(
+        "\u8ba2\u5355\u6570=%1  \u5468\u671f\u6570=%2  \u6d41\u5411\u6570=%3  \u7ec4\u522b\u6570=%4\n"
+        "\u4ea7\u80fd\u5229\u7528\u7387 = %5\n"
+        "\u65f6\u95f4\u7a97\u504f\u79fb = %6\n"
+        "\u9700\u6c42\u53d8\u5f02\u7cfb\u6570 = %7\n"
+        "\u96be\u5ea6\u8bc4\u5206 = %8\n"
+        "\u9884\u4f30Gap = %9")
         .arg(config.N)
         .arg(config.T)
         .arg(config.F)
