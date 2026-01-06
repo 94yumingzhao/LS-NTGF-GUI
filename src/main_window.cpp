@@ -174,8 +174,12 @@ void MainWindow::SetupMenuBar() {
         QMessageBox::about(this, QString::fromUtf8("关于"),
             QString::fromUtf8(
                 "生产计划优化器 GUI\n\n"
-                "版本 1.0.0\n\n"
-                "基于 Qt6 的 LS-NTGF-RR 求解器界面"));
+                "版本 2.0.0\n\n"
+                "基于 Qt6 的 LS-NTGF-All 统一求解器界面\n\n"
+                "支持算法:\n"
+                "  RF  - Relax-and-Fix\n"
+                "  RFO - RF + Fix-and-Optimize\n"
+                "  RR  - PP-GCB 三阶段分解"));
     });
     help_menu->addAction(about_action);
 }
@@ -193,8 +197,8 @@ void MainWindow::SetupConnections() {
 
     connect(this, &MainWindow::StartSolver, solver_worker_, &SolverWorker::RunOptimization);
     connect(solver_worker_, &SolverWorker::DataLoaded, this, &MainWindow::OnDataLoaded);
+    connect(solver_worker_, &SolverWorker::OrdersMerged, this, &MainWindow::OnOrdersMerged);
     connect(solver_worker_, &SolverWorker::StageStarted, this, &MainWindow::OnStageStarted);
-    connect(solver_worker_, &SolverWorker::StageProgress, this, &MainWindow::OnStageProgress);
     connect(solver_worker_, &SolverWorker::StageCompleted, this, &MainWindow::OnStageCompleted);
     connect(solver_worker_, &SolverWorker::OptimizationFinished, this, &MainWindow::OnOptimizationFinished);
     connect(solver_worker_, &SolverWorker::LogMessage, this, &MainWindow::OnLogMessage);
@@ -254,7 +258,10 @@ void MainWindow::OnStartOptimization() {
     ResetProgress();
     UpdateUiState(true);
 
-    // Set parameters
+    // Set algorithm and parameters
+    int algo_idx = param_widget_->GetAlgorithmIndex();
+    AlgorithmType algo = static_cast<AlgorithmType>(algo_idx);
+    solver_worker_->SetAlgorithm(algo);
     solver_worker_->SetDataPath(current_file_path_);
     solver_worker_->SetParameters(
         param_widget_->GetRuntimeLimit(),
@@ -263,7 +270,8 @@ void MainWindow::OnStartOptimization() {
         param_widget_->GetBigOrderThreshold()
     );
 
-    log_widget_->AppendLog(QString::fromUtf8("开始优化..."));
+    QString algo_names[] = {"RF", "RFO", "RR"};
+    log_widget_->AppendLog(QString::fromUtf8("开始优化 (算法: %1)...").arg(algo_names[algo_idx]));
     statusBar()->showMessage(QString::fromUtf8("正在优化..."));
 
     emit StartSolver();
@@ -302,19 +310,19 @@ void MainWindow::OnDataLoaded(int items, int periods, int flows, int groups) {
     log_widget_->AppendLog(QString::fromUtf8("数据已加载: %1 个订单, %2 个周期").arg(items).arg(periods));
 }
 
+void MainWindow::OnOrdersMerged(int original, int merged) {
+    // Update stage 0 (order merge) progress
+    progress_bars_[0]->setValue(100);
+    time_labels_[0]->setText(QString::fromUtf8("%1->%2").arg(original).arg(merged));
+    log_widget_->AppendLog(QString::fromUtf8("订单合并: %1 -> %2").arg(original).arg(merged));
+}
+
 void MainWindow::OnStageStarted(int stage, const QString& name) {
-    if (stage >= 0 && stage < 4) {
+    if (stage >= 1 && stage <= 3) {
         progress_bars_[stage]->setValue(0);
         time_labels_[stage]->setText("...");
     }
     log_widget_->AppendLog(QString::fromUtf8("开始: ") + name);
-}
-
-void MainWindow::OnStageProgress(int stage, int percent, double elapsed) {
-    if (stage >= 0 && stage < 4) {
-        progress_bars_[stage]->setValue(percent);
-        time_labels_[stage]->setText(QString("%1s").arg(elapsed, 0, 'f', 1));
-    }
 }
 
 void MainWindow::OnStageCompleted(int stage, double objective, double runtime, double gap) {
