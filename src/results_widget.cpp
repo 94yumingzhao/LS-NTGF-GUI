@@ -8,7 +8,7 @@
 #include <QLabel>
 
 ResultsWidget::ResultsWidget(QWidget* parent)
-    : QGroupBox(QString::fromUtf8("Results"), parent)
+    : QGroupBox(QString::fromUtf8("结果"), parent)
     , current_algo_(AlgorithmType::RF)
     , has_results_(false) {
     SetupUi();
@@ -33,7 +33,7 @@ void ResultsWidget::SetupUi() {
     layout->addWidget(table_);
 
     // Total runtime label
-    total_label_ = new QLabel("Total: --", this);
+    total_label_ = new QLabel(QString::fromUtf8("总耗时: --"), this);
     total_label_->setStyleSheet("font-weight: bold;");
     layout->addWidget(total_label_);
 
@@ -65,14 +65,23 @@ void ResultsWidget::SetupTableForRR() {
     table_->clear();
     table_->setRowCount(3);
     table_->setColumnCount(4);
-    table_->setHorizontalHeaderLabels({"Stage", "Objective", "Time", "Gap"});
+    table_->setHorizontalHeaderLabels({
+        QString::fromUtf8("阶段"),
+        QString::fromUtf8("目标值"),
+        QString::fromUtf8("耗时"),
+        "Gap"
+    });
 
     table_->setColumnWidth(0, 70);
     table_->setColumnWidth(1, 90);
     table_->setColumnWidth(2, 50);
     table_->setColumnWidth(3, 50);
 
-    QStringList stages = {"Setup", "Carryover", "Final"};
+    QStringList stages = {
+        QString::fromUtf8("初始"),
+        QString::fromUtf8("结转"),
+        QString::fromUtf8("最终")
+    };
     for (int i = 0; i < 3; ++i) {
         table_->setItem(i, 0, new QTableWidgetItem(stages[i]));
         table_->setItem(i, 1, new QTableWidgetItem("--"));
@@ -86,13 +95,17 @@ void ResultsWidget::SetupTableForRF() {
     table_->clear();
     table_->setRowCount(1);
     table_->setColumnCount(3);
-    table_->setHorizontalHeaderLabels({"", "Objective", "Time"});
+    table_->setHorizontalHeaderLabels({
+        "",
+        QString::fromUtf8("目标值"),
+        QString::fromUtf8("耗时")
+    });
 
     table_->setColumnWidth(0, 70);
     table_->setColumnWidth(1, 90);
     table_->setColumnWidth(2, 50);
 
-    table_->setItem(0, 0, new QTableWidgetItem("Result"));
+    table_->setItem(0, 0, new QTableWidgetItem(QString::fromUtf8("结果")));
     table_->setItem(0, 1, new QTableWidgetItem("--"));
     table_->setItem(0, 2, new QTableWidgetItem("--"));
 }
@@ -102,7 +115,12 @@ void ResultsWidget::SetupTableForRFO() {
     table_->clear();
     table_->setRowCount(2);
     table_->setColumnCount(4);
-    table_->setHorizontalHeaderLabels({"Phase", "Objective", "Time", "Improv"});
+    table_->setHorizontalHeaderLabels({
+        QString::fromUtf8("阶段"),
+        QString::fromUtf8("目标值"),
+        QString::fromUtf8("耗时"),
+        QString::fromUtf8("改进")
+    });
 
     table_->setColumnWidth(0, 70);
     table_->setColumnWidth(1, 90);
@@ -123,7 +141,7 @@ void ResultsWidget::SetupTableForRFO() {
 void ResultsWidget::ClearResults() {
     ClearTable();
     merge_label_->setText("--");
-    total_label_->setText("Total: --");
+    total_label_->setText(QString::fromUtf8("总耗时: --"));
     has_results_ = false;
 }
 
@@ -140,12 +158,12 @@ void ResultsWidget::ClearTable() {
 }
 
 void ResultsWidget::SetMergeInfo(int original, int merged) {
-    merge_label_->setText(QString("Merged: %1 -> %2").arg(original).arg(merged));
+    merge_label_->setText(QString::fromUtf8("合并: %1 -> %2").arg(original).arg(merged));
     merge_label_->setStyleSheet("color: black; font-size: 9pt;");
 }
 
 void ResultsWidget::SetMergeSkipped() {
-    merge_label_->setText("Merge: Skipped");
+    merge_label_->setText(QString::fromUtf8("合并: 已跳过"));
     merge_label_->setStyleSheet("color: gray; font-size: 9pt;");
 }
 
@@ -189,7 +207,7 @@ void ResultsWidget::SetStageResult(int stage, double objective, double runtime, 
 }
 
 void ResultsWidget::SetTotalRuntime(double runtime) {
-    total_label_->setText(QString("Total: %1s").arg(runtime, 0, 'f', 2));
+    total_label_->setText(QString::fromUtf8("总耗时: %1s").arg(runtime, 0, 'f', 2));
 }
 
 bool ResultsWidget::HasResults() const {

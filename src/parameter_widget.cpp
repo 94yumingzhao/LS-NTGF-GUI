@@ -28,7 +28,7 @@ void ParameterWidget::SetupUi() {
     algorithm_combo_->addItem(QString::fromUtf8("RF  - 滚动松弛固定"), 0);
     algorithm_combo_->addItem(QString::fromUtf8("RFO - RF + 滑动窗口优化"), 1);
     algorithm_combo_->addItem(QString::fromUtf8("RR  - 三阶段分解"), 2);
-    form->addRow(QString::fromUtf8("算法:"), algorithm_combo_);
+    form->addRow(QString::fromUtf8("算法"), algorithm_combo_);
 
     // CPLEX Runtime Limit
     runtime_limit_spin_ = new QDoubleSpinBox(this);
@@ -36,30 +36,30 @@ void ParameterWidget::SetupUi() {
     runtime_limit_spin_->setSuffix(" s");
     runtime_limit_spin_->setDecimals(1);
     runtime_limit_spin_->setSingleStep(10.0);
-    form->addRow(QString::fromUtf8("CPLEX时限:"), runtime_limit_spin_);
+    form->addRow(QString::fromUtf8("CPLEX时限"), runtime_limit_spin_);
 
     // Unmet Penalty
     u_penalty_spin_ = new QSpinBox(this);
     u_penalty_spin_->setRange(1, 1000000);
     u_penalty_spin_->setSingleStep(1000);
-    form->addRow(QString::fromUtf8("未满足惩罚:"), u_penalty_spin_);
+    form->addRow(QString::fromUtf8("未满足惩罚"), u_penalty_spin_);
 
     // Backlog Penalty
     b_penalty_spin_ = new QSpinBox(this);
     b_penalty_spin_->setRange(1, 100000);
     b_penalty_spin_->setSingleStep(10);
-    form->addRow(QString::fromUtf8("缺货惩罚:"), b_penalty_spin_);
-
-    // Merge Checkbox
-    merge_checkbox_ = new QCheckBox(QString::fromUtf8("启用订单合并"), this);
-    form->addRow("", merge_checkbox_);
+    form->addRow(QString::fromUtf8("缺货惩罚"), b_penalty_spin_);
 
     // Big Order Threshold
     big_order_threshold_spin_ = new QDoubleSpinBox(this);
     big_order_threshold_spin_->setRange(0.0, 100000.0);
     big_order_threshold_spin_->setDecimals(1);
     big_order_threshold_spin_->setSingleStep(100.0);
-    form->addRow(QString::fromUtf8("  合并阈值:"), big_order_threshold_spin_);
+    form->addRow(QString::fromUtf8("合并阈值"), big_order_threshold_spin_);
+
+    // Merge Checkbox (at bottom, checkbox on right)
+    merge_checkbox_ = new QCheckBox(this);
+    form->addRow(QString::fromUtf8("启用订单合并"), merge_checkbox_);
 
     layout->addLayout(form);
 

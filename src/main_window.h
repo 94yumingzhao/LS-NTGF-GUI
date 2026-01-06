@@ -60,6 +60,7 @@ private:
     void SetupConnections();
     void UpdateUiState(bool is_running);
     void ResetState();
+    void ParseCsvForIndicators(const QString& path);
 
     // Main layout
     QSplitter* main_splitter_;
@@ -104,6 +105,13 @@ private:
     bool is_running_;
     QString current_file_path_;
     double total_runtime_;
+
+    // Instance info (parsed from CSV)
+    int inst_n_;
+    int inst_t_;
+    int inst_g_;
+    int inst_f_;
+    double inst_difficulty_;
 };
 
 #endif  // MAIN_WINDOW_H_
