@@ -18,6 +18,7 @@ class QLineEdit;
 class QGroupBox;
 class QButtonGroup;
 class QRadioButton;
+class QToolButton;
 
 class GeneratorWidget : public QWidget {
     Q_OBJECT
@@ -42,6 +43,7 @@ private slots:
     void OnBrowseOutput();
     void OnGenerateClicked();
     void UpdatePreview();
+    void OnHelpButtonClicked();
 
 private:
     void SetupUi();
@@ -49,6 +51,8 @@ private:
     void SetupManualModeUi(QGroupBox* group);
     void SetupConnections();
     void ApplyPreset(const GeneratorConfig& config);
+    QToolButton* CreateHelpButton(const QString& tooltip, const QString& detail_title,
+                                   const QString& detail_content);
 
     // Mode selection
     QComboBox* mode_combo_;
