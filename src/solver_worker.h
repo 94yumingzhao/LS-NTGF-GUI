@@ -29,7 +29,7 @@ public:
     void SetDataPath(const QString& path);
     void SetAlgorithm(AlgorithmType algo);
     void SetParameters(double runtime_limit, int u_penalty,
-                       int b_penalty, double big_order_threshold);
+                       int b_penalty, bool merge_enabled, double big_order_threshold);
 
     AlgorithmType GetAlgorithm() const { return algorithm_; }
 
@@ -40,6 +40,7 @@ public slots:
 signals:
     void DataLoaded(int items, int periods, int flows, int groups);
     void OrdersMerged(int original, int merged);
+    void MergeSkipped();
     void StageStarted(int stage, const QString& name);
     void StageCompleted(int stage, double objective, double runtime, double gap);
     void OptimizationFinished(bool success, const QString& message);
@@ -61,6 +62,7 @@ private:
     double runtime_limit_;
     int u_penalty_;
     int b_penalty_;
+    bool merge_enabled_;
     double big_order_threshold_;
 
     QProcess* solver_process_;
