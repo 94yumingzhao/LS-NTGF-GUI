@@ -14,6 +14,7 @@ SolverWorker::SolverWorker(QObject* parent)
     , runtime_limit_(30.0)
     , u_penalty_(10000)
     , b_penalty_(100)
+    , merge_enabled_(true)
     , big_order_threshold_(1000.0)
     , solver_process_(nullptr)
     , log_reader_(nullptr)
@@ -39,10 +40,11 @@ void SolverWorker::SetAlgorithm(AlgorithmType algo) {
 }
 
 void SolverWorker::SetParameters(double runtime_limit, int u_penalty,
-                                  int b_penalty, double big_order_threshold) {
+                                  int b_penalty, bool merge_enabled, double big_order_threshold) {
     runtime_limit_ = runtime_limit;
     u_penalty_ = u_penalty;
     b_penalty_ = b_penalty;
+    merge_enabled_ = merge_enabled;
     big_order_threshold_ = big_order_threshold;
 }
 
@@ -122,7 +124,11 @@ void SolverWorker::RunOptimization() {
     args << "-t" << QString::number(runtime_limit_, 'f', 1);
     args << "--u-penalty" << QString::number(u_penalty_);
     args << "--b-penalty" << QString::number(b_penalty_);
-    args << "--threshold" << QString::number(big_order_threshold_, 'f', 1);
+    if (merge_enabled_) {
+        args << "--threshold" << QString::number(big_order_threshold_, 'f', 1);
+    } else {
+        args << "--no-merge";
+    }
 
     emit LogMessage(QString::fromUtf8("Args: %1").arg(args.join(" ")));
 
@@ -235,9 +241,7 @@ void SolverWorker::OnReadLogFile() {
 
     while (!in.atEnd()) {
         QString line = in.readLine();
-        if (!line.isEmpty()) {
-            emit LogMessage(line);
-        }
+        emit LogMessage(line);
     }
 
     log_file_pos_ = file.pos();
@@ -280,6 +284,12 @@ void SolverWorker::ParseStatusLine(const QString& line) {
         int original = match.captured(1).toInt();
         int merged = match.captured(2).toInt();
         emit OrdersMerged(original, merged);
+        return;
+    }
+
+    // Check MERGE:SKIP
+    if (line == "[MERGE:SKIP]") {
+        emit MergeSkipped();
         return;
     }
 
