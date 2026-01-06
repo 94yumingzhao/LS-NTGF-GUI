@@ -6,8 +6,11 @@
 #include "results_widget.h"
 #include "log_widget.h"
 #include "solver_worker.h"
+#include "generator_widget.h"
+#include "generator_worker.h"
 
 #include <QMenuBar>
+#include <QTabWidget>
 #include <QMenu>
 #include <QAction>
 #include <QVBoxLayout>
@@ -26,8 +29,10 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
-    , worker_thread_(nullptr)
+    , solver_thread_(nullptr)
     , solver_worker_(nullptr)
+    , generator_thread_(nullptr)
+    , generator_worker_(nullptr)
     , is_running_(false)
     , total_runtime_(0.0) {
     SetupUi();
@@ -40,9 +45,13 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 MainWindow::~MainWindow() {
-    if (worker_thread_) {
-        worker_thread_->quit();
-        worker_thread_->wait();
+    if (solver_thread_) {
+        solver_thread_->quit();
+        solver_thread_->wait();
+    }
+    if (generator_thread_) {
+        generator_thread_->quit();
+        generator_thread_->wait();
     }
 }
 
@@ -61,8 +70,17 @@ void MainWindow::SetupUi() {
     sidebar_layout->setSpacing(8);
     sidebar_layout->setContentsMargins(0, 0, 0, 0);
 
-    // --- File Selection Group ---
-    file_group_ = new QGroupBox(QString::fromUtf8(""), this);
+    // --- Mode Tabs (Solver / Generator) ---
+    mode_tabs_ = new QTabWidget(this);
+
+    // ===== Solver Tab =====
+    auto* solver_tab = new QWidget();
+    auto* solver_layout = new QVBoxLayout(solver_tab);
+    solver_layout->setSpacing(8);
+    solver_layout->setContentsMargins(4, 4, 4, 4);
+
+    // File Selection Group
+    file_group_ = new QGroupBox(QString::fromUtf8(""), solver_tab);
     auto* file_layout = new QVBoxLayout(file_group_);
     file_layout->setSpacing(4);
 
@@ -81,14 +99,14 @@ void MainWindow::SetupUi() {
     file_info_label_->setStyleSheet("color: gray; font-size: 9pt;");
     file_layout->addWidget(file_info_label_);
 
-    sidebar_layout->addWidget(file_group_);
+    solver_layout->addWidget(file_group_);
 
-    // --- Parameters Widget ---
-    param_widget_ = new ParameterWidget(this);
-    sidebar_layout->addWidget(param_widget_);
+    // Parameters Widget
+    param_widget_ = new ParameterWidget(solver_tab);
+    solver_layout->addWidget(param_widget_);
 
-    // --- Control Group ---
-    control_group_ = new QGroupBox(this);
+    // Control Group
+    control_group_ = new QGroupBox(solver_tab);
     auto* control_layout = new QVBoxLayout(control_group_);
     control_layout->setSpacing(4);
 
@@ -106,18 +124,26 @@ void MainWindow::SetupUi() {
     status_label_->setAlignment(Qt::AlignCenter);
     control_layout->addWidget(status_label_);
 
-    sidebar_layout->addWidget(control_group_);
+    solver_layout->addWidget(control_group_);
 
-    // --- Results Widget ---
-    results_widget_ = new ResultsWidget(this);
-    sidebar_layout->addWidget(results_widget_);
+    // Results Widget
+    results_widget_ = new ResultsWidget(solver_tab);
+    solver_layout->addWidget(results_widget_);
 
-    // --- Export Button ---
-    export_button_ = new QPushButton(QString::fromUtf8("Export Log..."), this);
-    sidebar_layout->addWidget(export_button_);
+    // Export Button
+    export_button_ = new QPushButton(QString::fromUtf8("Export Log..."), solver_tab);
+    solver_layout->addWidget(export_button_);
 
-    // Stretch at bottom
-    sidebar_layout->addStretch();
+    solver_layout->addStretch();
+
+    // ===== Generator Tab =====
+    generator_widget_ = new GeneratorWidget();
+
+    // Add tabs
+    mode_tabs_->addTab(solver_tab, "Solver");
+    mode_tabs_->addTab(generator_widget_, "Generator");
+
+    sidebar_layout->addWidget(mode_tabs_);
 
     // ========== Right Log Area ==========
     log_widget_ = new LogWidget(this);
@@ -181,10 +207,10 @@ void MainWindow::SetupConnections() {
     connect(param_widget_, &ParameterWidget::AlgorithmChanged,
             this, &MainWindow::OnAlgorithmChanged);
 
-    // Setup worker thread
-    worker_thread_ = new QThread(this);
+    // Setup solver worker thread
+    solver_thread_ = new QThread(this);
     solver_worker_ = new SolverWorker();
-    solver_worker_->moveToThread(worker_thread_);
+    solver_worker_->moveToThread(solver_thread_);
 
     connect(this, &MainWindow::StartSolver, solver_worker_, &SolverWorker::RunOptimization);
     connect(solver_worker_, &SolverWorker::DataLoaded, this, &MainWindow::OnDataLoaded);
@@ -195,9 +221,27 @@ void MainWindow::SetupConnections() {
     connect(solver_worker_, &SolverWorker::OptimizationFinished, this, &MainWindow::OnOptimizationFinished);
     connect(solver_worker_, &SolverWorker::LogMessage, this, &MainWindow::OnLogMessage);
 
-    connect(worker_thread_, &QThread::finished, solver_worker_, &QObject::deleteLater);
+    connect(solver_thread_, &QThread::finished, solver_worker_, &QObject::deleteLater);
+    solver_thread_->start();
 
-    worker_thread_->start();
+    // Setup generator worker thread
+    generator_thread_ = new QThread(this);
+    generator_worker_ = new GeneratorWorker();
+    generator_worker_->moveToThread(generator_thread_);
+
+    connect(generator_widget_, &GeneratorWidget::GenerateRequested,
+            this, &MainWindow::OnGenerateRequested);
+    connect(generator_worker_, &GeneratorWorker::GenerationStarted,
+            this, &MainWindow::OnGenerationStarted);
+    connect(generator_worker_, &GeneratorWorker::InstanceGenerated,
+            this, &MainWindow::OnInstanceGenerated);
+    connect(generator_worker_, &GeneratorWorker::GenerationFinished,
+            this, &MainWindow::OnGenerationFinished);
+    connect(generator_worker_, &GeneratorWorker::LogMessage,
+            this, &MainWindow::OnLogMessage);
+
+    connect(generator_thread_, &QThread::finished, generator_worker_, &QObject::deleteLater);
+    generator_thread_->start();
 
     // Initialize results widget with current algorithm
     OnAlgorithmChanged(param_widget_->GetAlgorithmIndex());
@@ -358,4 +402,48 @@ void MainWindow::OnOptimizationFinished(bool success, const QString& message) {
 
 void MainWindow::OnLogMessage(const QString& message) {
     log_widget_->AppendLog(message);
+}
+
+// ============================================================================
+// Generator Slots
+// ============================================================================
+
+void MainWindow::OnGenerateRequested(const GeneratorConfig& config) {
+    log_widget_->ClearLog();
+    log_widget_->AppendLog("Starting instance generation...");
+
+    generator_worker_->SetConfig(config);
+
+    // Use QMetaObject to invoke across threads
+    QMetaObject::invokeMethod(generator_worker_, "RunGeneration", Qt::QueuedConnection);
+
+    statusBar()->showMessage("Generating...");
+}
+
+void MainWindow::OnGenerationStarted(int count) {
+    log_widget_->AppendLog(QString("Generating %1 instance(s)...").arg(count));
+}
+
+void MainWindow::OnInstanceGenerated(int index, const QString& filename) {
+    log_widget_->AppendLog(QString("[%1] Generated: %2").arg(index).arg(filename));
+}
+
+void MainWindow::OnGenerationFinished(bool success, const QString& message,
+                                       const QStringList& files) {
+    if (success) {
+        statusBar()->showMessage("Generation completed");
+        log_widget_->AppendLog("Generation completed: " + message);
+
+        // Offer to load the first generated file
+        if (!files.isEmpty()) {
+            QString first_file = files.first();
+            if (!first_file.startsWith("D:")) {
+                first_file = "D:/YM-Code/LS-NTGF-Data-Cap/" + first_file;
+            }
+            log_widget_->AppendLog("Generated file ready for solving: " + first_file);
+        }
+    } else {
+        statusBar()->showMessage("Generation failed");
+        log_widget_->AppendLog("Generation failed: " + message);
+    }
 }

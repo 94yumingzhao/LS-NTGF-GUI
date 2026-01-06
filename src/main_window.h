@@ -7,16 +7,20 @@
 #include <QMainWindow>
 #include <QThread>
 #include <QString>
+#include "difficulty_mapper.h"
 
 class ParameterWidget;
 class ResultsWidget;
 class LogWidget;
 class SolverWorker;
+class GeneratorWidget;
+class GeneratorWorker;
 class QLineEdit;
 class QLabel;
 class QPushButton;
 class QGroupBox;
 class QSplitter;
+class QTabWidget;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -35,7 +39,7 @@ private slots:
     void OnExportLog();
     void OnAlgorithmChanged(int index);
 
-    // Slots for worker signals
+    // Slots for solver worker signals
     void OnDataLoaded(int items, int periods, int flows, int groups);
     void OnOrdersMerged(int original, int merged);
     void OnMergeSkipped();
@@ -43,6 +47,12 @@ private slots:
     void OnStageCompleted(int stage, double objective, double runtime, double gap);
     void OnOptimizationFinished(bool success, const QString& message);
     void OnLogMessage(const QString& message);
+
+    // Slots for generator
+    void OnGenerateRequested(const GeneratorConfig& config);
+    void OnGenerationStarted(int count);
+    void OnInstanceGenerated(int index, const QString& filename);
+    void OnGenerationFinished(bool success, const QString& message, const QStringList& files);
 
 private:
     void SetupUi();
@@ -78,9 +88,17 @@ private:
     // Right area - Log
     LogWidget* log_widget_;
 
-    // Worker thread
-    QThread* worker_thread_;
+    // Left sidebar - Generator tab
+    GeneratorWidget* generator_widget_;
+
+    // Tab widget for mode switching
+    QTabWidget* mode_tabs_;
+
+    // Worker threads
+    QThread* solver_thread_;
     SolverWorker* solver_worker_;
+    QThread* generator_thread_;
+    GeneratorWorker* generator_worker_;
 
     // State
     bool is_running_;

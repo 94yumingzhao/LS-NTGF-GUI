@@ -60,6 +60,9 @@ set(GUI_SOURCES
     src/parameter_widget.cpp
     src/results_widget.cpp
     src/log_widget.cpp
+    src/generator_widget.cpp
+    src/generator_worker.cpp
+    src/difficulty_mapper.cpp
 )
 
 set(GUI_HEADERS
@@ -68,6 +71,9 @@ set(GUI_HEADERS
     src/parameter_widget.h
     src/results_widget.h
     src/log_widget.h
+    src/generator_widget.h
+    src/generator_worker.h
+    src/difficulty_mapper.h
 )
 
 qt_add_executable(LS-NTGF-GUI
