@@ -30,6 +30,7 @@ public:
     void SetAlgorithm(AlgorithmType algo);
     void SetParameters(double runtime_limit, int u_penalty,
                        int b_penalty, bool merge_enabled, double big_order_threshold);
+    void SetInstanceInfo(int n, int t, int g, int f, double difficulty);
 
     AlgorithmType GetAlgorithm() const { return algorithm_; }
 
@@ -64,6 +65,13 @@ private:
     int b_penalty_;
     bool merge_enabled_;
     double big_order_threshold_;
+
+    // Instance info for output filename
+    int inst_n_;
+    int inst_t_;
+    int inst_g_;
+    int inst_f_;
+    double inst_difficulty_;
 
     QProcess* solver_process_;
     QTimer* log_reader_;

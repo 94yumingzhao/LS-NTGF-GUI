@@ -3,6 +3,7 @@
 #include "solver_worker.h"
 
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
 #include <QRegularExpression>
@@ -46,6 +47,14 @@ void SolverWorker::SetParameters(double runtime_limit, int u_penalty,
     b_penalty_ = b_penalty;
     merge_enabled_ = merge_enabled;
     big_order_threshold_ = big_order_threshold;
+}
+
+void SolverWorker::SetInstanceInfo(int n, int t, int g, int f, double difficulty) {
+    inst_n_ = n;
+    inst_t_ = t;
+    inst_g_ = g;
+    inst_f_ = f;
+    inst_difficulty_ = difficulty;
 }
 
 QString SolverWorker::GetAlgorithmName() const {
@@ -97,30 +106,40 @@ void SolverWorker::RunOptimization() {
     QFileInfo exe_info(exe_path);
 
     if (!exe_info.exists()) {
-        emit LogMessage(QString::fromUtf8("Error: Solver not found: %1").arg(exe_path));
-        emit OptimizationFinished(false, QString::fromUtf8("Solver executable not found"));
+        emit LogMessage(QString::fromUtf8("错误: 找不到求解器: %1").arg(exe_path));
+        emit OptimizationFinished(false, QString::fromUtf8("找不到求解器可执行文件"));
         return;
     }
 
-    emit LogMessage(QString::fromUtf8("Solver: %1").arg(exe_path));
-    emit LogMessage(QString::fromUtf8("Algorithm: %1").arg(GetAlgorithmName()));
-    emit LogMessage(QString::fromUtf8("Data: %1").arg(data_path_));
+    emit LogMessage(QString::fromUtf8("求解器: %1").arg(exe_path));
+    emit LogMessage(QString::fromUtf8("算法: %1").arg(GetAlgorithmName()));
+    emit LogMessage(QString::fromUtf8("数据: %1").arg(data_path_));
 
-    // Prepare temporary directories
-    QString temp_dir = QDir::tempPath() + "/LS-NTGF-GUI";
-    QDir().mkpath(temp_dir);
-    QDir().mkpath(temp_dir + "/results");
-    QDir().mkpath(temp_dir + "/logs");
+    // 准备输出目录
+    QString output_dir = "D:/YM-Code/LS-NTGF-GUI/output";
+    QDir().mkpath(output_dir);
+    QDir().mkpath(output_dir + "/results");
+    QDir().mkpath(output_dir + "/logs");
 
-    log_file_path_ = temp_dir + "/logs/solve_" + GetAlgorithmName() + ".log";
+    // 生成时间戳和文件名
+    QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss");
+    QString file_base = QString("N%1T%2G%3F%4_%5_%6")
+        .arg(inst_n_).arg(inst_t_).arg(inst_g_).arg(inst_f_)
+        .arg(inst_difficulty_, 0, 'f', 2)
+        .arg(timestamp);
+
+    QString solution_path = output_dir + "/results/solution_" + GetAlgorithmName() + "_" + file_base;
+    QString log_base = output_dir + "/logs/log_" + GetAlgorithmName() + "_" + file_base;
+
+    log_file_path_ = log_base + ".log";
     log_file_pos_ = 0;
 
-    // Build command line arguments
+    // 构建命令行参数
     QStringList args;
     args << QString("--algo=%1").arg(GetAlgorithmName());
     args << "-f" << data_path_;
-    args << "-o" << (temp_dir + "/results");
-    args << "-l" << (temp_dir + "/logs/solve_" + GetAlgorithmName());
+    args << "-o" << solution_path;
+    args << "-l" << log_base;
     args << "-t" << QString::number(runtime_limit_, 'f', 1);
     args << "--u-penalty" << QString::number(u_penalty_);
     args << "--b-penalty" << QString::number(b_penalty_);
@@ -130,7 +149,7 @@ void SolverWorker::RunOptimization() {
         args << "--no-merge";
     }
 
-    emit LogMessage(QString::fromUtf8("Args: %1").arg(args.join(" ")));
+    emit LogMessage(QString::fromUtf8("参数: %1").arg(args.join(" ")));
 
     // Create and configure process
     if (solver_process_) {
@@ -159,12 +178,12 @@ void SolverWorker::RunOptimization() {
     solver_process_->start(exe_path, args);
 
     if (!solver_process_->waitForStarted(5000)) {
-        emit LogMessage(QString::fromUtf8("Error: Failed to start solver process"));
-        emit OptimizationFinished(false, QString::fromUtf8("Failed to start solver"));
+        emit LogMessage(QString::fromUtf8("错误: 无法启动求解器进程"));
+        emit OptimizationFinished(false, QString::fromUtf8("无法启动求解器"));
         return;
     }
 
-    emit LogMessage(QString::fromUtf8("Solver process started (PID: %1)")
+    emit LogMessage(QString::fromUtf8("求解器进程已启动 (PID: %1)")
                     .arg(solver_process_->processId()));
 }
 
@@ -207,24 +226,24 @@ void SolverWorker::OnProcessFinished(int exitCode, QProcess::ExitStatus status) 
     OnReadLogFile();
 
     if (cancel_requested_) {
-        emit OptimizationFinished(false, QString::fromUtf8("Cancelled by user"));
+        emit OptimizationFinished(false, QString::fromUtf8("已被用户取消"));
         return;
     }
 
     if (status == QProcess::CrashExit) {
-        emit LogMessage(QString::fromUtf8("Solver process crashed"));
-        emit OptimizationFinished(false, QString::fromUtf8("Solver crashed"));
+        emit LogMessage(QString::fromUtf8("求解器进程崩溃"));
+        emit OptimizationFinished(false, QString::fromUtf8("求解器崩溃"));
         return;
     }
 
     if (exitCode != 0) {
-        emit LogMessage(QString::fromUtf8("Solver exited with code %1").arg(exitCode));
-        emit OptimizationFinished(false, QString::fromUtf8("Solver failed (exit code %1)").arg(exitCode));
+        emit LogMessage(QString::fromUtf8("求解器退出, 代码 %1").arg(exitCode));
+        emit OptimizationFinished(false, QString::fromUtf8("求解器失败 (退出代码 %1)").arg(exitCode));
         return;
     }
 
-    emit LogMessage(QString::fromUtf8("Solver completed successfully"));
-    emit OptimizationFinished(true, QString::fromUtf8("Completed"));
+    emit LogMessage(QString::fromUtf8("求解器成功完成"));
+    emit OptimizationFinished(true, QString::fromUtf8("完成"));
 }
 
 void SolverWorker::OnReadLogFile() {
@@ -299,10 +318,10 @@ void SolverWorker::ParseStatusLine(const QString& line) {
         int stage = match.captured(1).toInt();
         QString name;
         switch (stage) {
-            case 1: name = QString::fromUtf8("Stage 1 - Setup Optimization"); break;
-            case 2: name = QString::fromUtf8("Stage 2 - Carryover Optimization"); break;
-            case 3: name = QString::fromUtf8("Stage 3 - Final Optimization"); break;
-            default: name = QString::fromUtf8("Stage %1").arg(stage); break;
+            case 1: name = QString::fromUtf8("阶段1 - 初始优化"); break;
+            case 2: name = QString::fromUtf8("阶段2 - 结转优化"); break;
+            case 3: name = QString::fromUtf8("阶段3 - 最终优化"); break;
+            default: name = QString::fromUtf8("阶段 %1").arg(stage); break;
         }
         emit StageStarted(stage, name);
         return;
@@ -323,7 +342,7 @@ void SolverWorker::ParseStatusLine(const QString& line) {
     match = re_error.match(line);
     if (match.hasMatch()) {
         QString message = match.captured(1);
-        emit LogMessage(QString::fromUtf8("Error: %1").arg(message));
+        emit LogMessage(QString::fromUtf8("错误: %1").arg(message));
         return;
     }
 }

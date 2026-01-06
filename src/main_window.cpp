@@ -23,6 +23,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QMessageBox>
+#include <QRegularExpression>
 #include <QStatusBar>
 #include <QFile>
 #include <QTextStream>
@@ -268,9 +269,9 @@ void MainWindow::ResetState() {
 
 void MainWindow::OnBrowseFile() {
     QString path = QFileDialog::getOpenFileName(this,
-        QString::fromUtf8("\u6253\u5f00\u6570\u636e\u6587\u4ef6"),
+        QString::fromUtf8("打开数据文件"),
         "D:/YM-Code/LS-NTGF-Data-Cap/data",
-        QString::fromUtf8("CSV (*.csv);;\u6240\u6709\u6587\u4ef6 (*)"));
+        QString::fromUtf8("CSV (*.csv);;所有文件 (*)"));
 
     if (!path.isEmpty()) {
         current_file_path_ = path;
@@ -278,11 +279,70 @@ void MainWindow::OnBrowseFile() {
         QFileInfo fi(path);
         file_path_edit_->setText(fi.fileName());
         file_path_edit_->setToolTip(path);
-        file_info_label_->setText(QString::fromUtf8("\u52a0\u8f7d\u4e2d..."));
-        file_info_label_->setStyleSheet("color: gray; font-size: 9pt;");
+
+        // Parse CSV to get NTGF indicators
+        ParseCsvForIndicators(path);
 
         start_button_->setEnabled(true);
-        log_widget_->AppendLog(QString::fromUtf8("\u6587\u4ef6: ") + path);
+        log_widget_->AppendLog(QString::fromUtf8("文件: ") + path);
+    }
+}
+
+void MainWindow::ParseCsvForIndicators(const QString& path) {
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        file_info_label_->setText(QString::fromUtf8("无法读取文件"));
+        file_info_label_->setStyleSheet("color: red; font-size: 9pt;");
+        return;
+    }
+
+    int n = 0, t = 0, g = 0, f = 0;
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine().trimmed();
+        if (line.startsWith("T_num,")) {
+            t = line.mid(6).toInt();
+        } else if (line.startsWith("F_num,")) {
+            f = line.mid(6).toInt();
+        } else if (line.startsWith("G_num,")) {
+            g = line.mid(6).toInt();
+        } else if (line.startsWith("Order_Num,")) {
+            n = line.mid(10).toInt();
+        }
+        // Stop after finding all values
+        if (n > 0 && t > 0 && g > 0 && f > 0) break;
+    }
+    file.close();
+
+    if (n > 0 && t > 0) {
+        inst_n_ = n;
+        inst_t_ = t;
+        inst_g_ = g;
+        inst_f_ = f;
+
+        // 尝试从文件名提取难度 (格式: N100T30G5F5_0.93_20260106_...)
+        QFileInfo fi(path);
+        QRegularExpression re("_(\\d+\\.\\d+)_\\d{8}_");
+        QRegularExpressionMatch match = re.match(fi.fileName());
+        if (match.hasMatch()) {
+            inst_difficulty_ = match.captured(1).toDouble();
+        } else {
+            // 使用简化公式计算难度 (默认参数)
+            inst_difficulty_ = 0.30 * 1.0
+                + 0.20 * (1.0 - 11.0 / t)
+                + 0.20 * (static_cast<double>(n) * t / 3000.0)
+                + 0.15 * 1.0
+                + 0.15 * (static_cast<double>(g) / 5.0);
+        }
+
+        QString info = QString("N=%1  T=%2  G=%3  F=%4").arg(n).arg(t).arg(g).arg(f);
+        file_info_label_->setText(info);
+        file_info_label_->setStyleSheet("color: black; font-size: 9pt;");
+    } else {
+        inst_n_ = inst_t_ = inst_g_ = inst_f_ = 0;
+        inst_difficulty_ = 0.0;
+        file_info_label_->setText(QString::fromUtf8("无法解析文件"));
+        file_info_label_->setStyleSheet("color: orange; font-size: 9pt;");
     }
 }
 
@@ -296,7 +356,7 @@ void MainWindow::OnStartOptimization() {
     ResetState();
     UpdateUiState(true);
 
-    // Set algorithm and parameters
+    // 设置算法和参数
     int algo_idx = param_widget_->GetAlgorithmIndex();
     AlgorithmType algo = static_cast<AlgorithmType>(algo_idx);
     solver_worker_->SetAlgorithm(algo);
@@ -308,6 +368,7 @@ void MainWindow::OnStartOptimization() {
         param_widget_->GetMergeEnabled(),
         param_widget_->GetBigOrderThreshold()
     );
+    solver_worker_->SetInstanceInfo(inst_n_, inst_t_, inst_g_, inst_f_, inst_difficulty_);
 
     QString algo_names[] = {"RF", "RFO", "RR"};
     log_widget_->AppendLog(QString::fromUtf8("\u5f00\u59cb\u4f18\u5316 (\u7b97\u6cd5: %1)...")
