@@ -1,5 +1,5 @@
 # LS-NTGF-GUI - Qt6 GUI for Production Planning Optimizer
-# This project wraps the LS-NTGF-RR solver with a graphical interface
+# This project launches LS-NTGF-RR.exe as a subprocess
 
 cmake_minimum_required(VERSION 3.24)
 
@@ -10,7 +10,7 @@ project(LS-NTGF-GUI
 )
 
 # C++ Standard
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -44,63 +44,10 @@ endforeach()
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core)
 qt_standard_project_setup()
 
-# CPLEX
-set(CPLEX_DIR "D:/CPLEX" CACHE PATH "CPLEX installation directory")
-if(NOT EXISTS ${CPLEX_DIR})
-    message(FATAL_ERROR "CPLEX directory not found at ${CPLEX_DIR}. Please set CPLEX_DIR correctly.")
-endif()
-
 # MSVC Runtime
 if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL")
 endif()
-
-#---------------------------------------
-# LS-NTGF-RR Core Library (from source)
-#---------------------------------------
-
-set(CORE_PROJECT_DIR "${CMAKE_SOURCE_DIR}/../LS-NTGF-RR" CACHE PATH "Path to LS-NTGF-RR project")
-if(NOT EXISTS ${CORE_PROJECT_DIR}/src/optimizer.h)
-    message(FATAL_ERROR "LS-NTGF-RR project not found at ${CORE_PROJECT_DIR}")
-endif()
-
-set(CORE_SOURCES
-    ${CORE_PROJECT_DIR}/src/input.cpp
-    ${CORE_PROJECT_DIR}/src/output.cpp
-    ${CORE_PROJECT_DIR}/src/solver.cpp
-    ${CORE_PROJECT_DIR}/src/big_order.cpp
-    ${CORE_PROJECT_DIR}/src/cplex_lot_sizing.cpp
-    ${CORE_PROJECT_DIR}/src/logger.cpp
-    ${CORE_PROJECT_DIR}/src/case_analysis.cpp
-)
-
-set(CORE_HEADERS
-    ${CORE_PROJECT_DIR}/src/common.h
-    ${CORE_PROJECT_DIR}/src/optimizer.h
-    ${CORE_PROJECT_DIR}/src/logger.h
-    ${CORE_PROJECT_DIR}/src/case_analysis.h
-)
-
-add_library(OptimizerCore STATIC ${CORE_SOURCES} ${CORE_HEADERS})
-
-target_include_directories(OptimizerCore PUBLIC
-    ${CORE_PROJECT_DIR}/src
-    "${CPLEX_DIR}/cplex/include"
-    "${CPLEX_DIR}/concert/include"
-)
-
-target_compile_definitions(OptimizerCore PUBLIC IL_STD)
-
-target_link_directories(OptimizerCore PUBLIC
-    "${CPLEX_DIR}/cplex/lib/x64_windows_msvc14/stat_mda"
-    "${CPLEX_DIR}/concert/lib/x64_windows_msvc14/stat_mda"
-)
-
-target_link_libraries(OptimizerCore PUBLIC
-    cplex2210
-    ilocplex
-    concert
-)
 
 #---------------------------------------
 # GUI Executable
@@ -129,7 +76,6 @@ qt_add_executable(LS-NTGF-GUI
 )
 
 target_link_libraries(LS-NTGF-GUI PRIVATE
-    OptimizerCore
     Qt6::Widgets
     Qt6::Core
 )
@@ -146,8 +92,7 @@ set_target_properties(LS-NTGF-GUI PROPERTIES
 message(STATUS "")
 message(STATUS "=== LS-NTGF-GUI Build Configuration ===")
 message(STATUS "Qt6 Version: ${Qt6_VERSION}")
-message(STATUS "CPLEX Directory: ${CPLEX_DIR}")
-message(STATUS "Core Project: ${CORE_PROJECT_DIR}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Solver: ../LS-NTGF-RR/build/release/bin/Release/ProductionPlanningOptimizer.exe")
 message(STATUS "==========================================")
 message(STATUS "")

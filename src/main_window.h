@@ -35,8 +35,8 @@ private slots:
 
     // Slots for worker signals
     void OnDataLoaded(int items, int periods, int flows, int groups);
+    void OnOrdersMerged(int original, int merged);
     void OnStageStarted(int stage, const QString& name);
-    void OnStageProgress(int stage, int percent, double elapsed);
     void OnStageCompleted(int stage, double objective, double runtime, double gap);
     void OnOptimizationFinished(bool success, const QString& message);
     void OnLogMessage(const QString& message);

@@ -8,6 +8,10 @@
 class QDoubleSpinBox;
 class QSpinBox;
 class QPushButton;
+class QComboBox;
+
+// 算法类型 (与 solver_worker.h 保持一致)
+enum class AlgorithmType;
 
 class ParameterWidget : public QGroupBox {
     Q_OBJECT
@@ -15,6 +19,7 @@ class ParameterWidget : public QGroupBox {
 public:
     explicit ParameterWidget(QWidget* parent = nullptr);
 
+    int GetAlgorithmIndex() const;
     double GetRuntimeLimit() const;
     int GetUPenalty() const;
     int GetBPenalty() const;
@@ -26,6 +31,7 @@ public slots:
 private:
     void SetupUi();
 
+    QComboBox* algorithm_combo_;
     QDoubleSpinBox* runtime_limit_spin_;
     QSpinBox* u_penalty_spin_;
     QSpinBox* b_penalty_spin_;

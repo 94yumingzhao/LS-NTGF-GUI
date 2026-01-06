@@ -6,6 +6,7 @@
 #include <QFormLayout>
 #include <QDoubleSpinBox>
 #include <QSpinBox>
+#include <QComboBox>
 #include <QPushButton>
 #include <QLabel>
 
@@ -20,6 +21,13 @@ void ParameterWidget::SetupUi() {
 
     auto* form = new QFormLayout();
     form->setLabelAlignment(Qt::AlignRight);
+
+    // Algorithm Selection
+    algorithm_combo_ = new QComboBox(this);
+    algorithm_combo_->addItem(QString::fromUtf8("RF  - 滚动松弛固定"), 0);
+    algorithm_combo_->addItem(QString::fromUtf8("RFO - RF + 滑动窗口优化"), 1);
+    algorithm_combo_->addItem(QString::fromUtf8("RR  - 三阶段分解"), 2);
+    form->addRow(QString::fromUtf8("算法:"), algorithm_combo_);
 
     // CPLEX Runtime Limit
     runtime_limit_spin_ = new QDoubleSpinBox(this);
@@ -59,10 +67,15 @@ void ParameterWidget::SetupUi() {
 }
 
 void ParameterWidget::ResetDefaults() {
+    algorithm_combo_->setCurrentIndex(0);  // RF
     runtime_limit_spin_->setValue(30.0);
     u_penalty_spin_->setValue(10000);
     b_penalty_spin_->setValue(100);
     big_order_threshold_spin_->setValue(1000.0);
+}
+
+int ParameterWidget::GetAlgorithmIndex() const {
+    return algorithm_combo_->currentIndex();
 }
 
 double ParameterWidget::GetRuntimeLimit() const {

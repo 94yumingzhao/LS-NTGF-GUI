@@ -13,7 +13,6 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "CPLEX_DIR": "D:/CPLEX",
                 "CMAKE_PREFIX_PATH": "D:/Tools-DV/Qt/6.10.1/msvc2022_64"
             }
         },
@@ -41,7 +40,6 @@
             "binaryDir": "${sourceDir}/build/vs2022",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CPLEX_DIR": "D:/CPLEX",
                 "CMAKE_PREFIX_PATH": "D:/Tools-DV/Qt/6.10.1/msvc2022_64"
             }
         },
@@ -53,7 +51,6 @@
             "binaryDir": "${sourceDir}/build/vs2022",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "CPLEX_DIR": "D:/CPLEX",
                 "CMAKE_PREFIX_PATH": "D:/Tools-DV/Qt/6.10.1/msvc2022_64"
             }
         }
