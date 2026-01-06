@@ -64,7 +64,7 @@ void ParameterWidget::SetupUi() {
     layout->addLayout(form);
 
     // Reset button
-    reset_button_ = new QPushButton(QString::fromUtf8("Reset"), this);
+    reset_button_ = new QPushButton(QString::fromUtf8("\u91cd\u7f6e"), this);
     connect(reset_button_, &QPushButton::clicked, this, &ParameterWidget::ResetDefaults);
     layout->addWidget(reset_button_);
 
