@@ -28,13 +28,13 @@ QString LogWidget::GetLogText() const {
 }
 
 void LogWidget::AppendLog(const QString& message) {
-    // 如果消息已经包含时间戳 [YYYY-MM-DD HH:MM:SS]，则不再添加
     QString formatted;
+
+    // 如果消息已经包含时间戳 [YYYY-MM-DD HH:MM:SS]，则不再添加
     if (message.startsWith("[20") && message.length() > 21 && message[20] == ']') {
-        // 已有完整时间戳，直接使用
         formatted = message;
     } else {
-        // 添加简短时间戳
+        // 添加时间戳（包括空行）
         QString timestamp = GetTimestamp();
         formatted = QString("[%1] %2").arg(timestamp, message);
     }

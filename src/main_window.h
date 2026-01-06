@@ -1,4 +1,5 @@
 // main_window.h - Main Window Declaration
+// Layout: Left sidebar (file, params, controls, results) + Right log area
 
 #ifndef MAIN_WINDOW_H_
 #define MAIN_WINDOW_H_
@@ -14,8 +15,8 @@ class SolverWorker;
 class QLineEdit;
 class QLabel;
 class QPushButton;
-class QProgressBar;
 class QGroupBox;
+class QSplitter;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -31,11 +32,13 @@ private slots:
     void OnBrowseFile();
     void OnStartOptimization();
     void OnCancelOptimization();
-    void OnExportResults();
+    void OnExportLog();
+    void OnAlgorithmChanged(int index);
 
     // Slots for worker signals
     void OnDataLoaded(int items, int periods, int flows, int groups);
     void OnOrdersMerged(int original, int merged);
+    void OnMergeSkipped();
     void OnStageStarted(int stage, const QString& name);
     void OnStageCompleted(int stage, double objective, double runtime, double gap);
     void OnOptimizationFinished(bool success, const QString& message);
@@ -46,35 +49,34 @@ private:
     void SetupMenuBar();
     void SetupConnections();
     void UpdateUiState(bool is_running);
-    void ResetProgress();
+    void ResetState();
 
-    // File selection
+    // Main layout
+    QSplitter* main_splitter_;
+
+    // Left sidebar - File selection
     QGroupBox* file_group_;
     QPushButton* browse_button_;
     QLineEdit* file_path_edit_;
     QLabel* file_info_label_;
 
-    // Parameters
+    // Left sidebar - Parameters
     ParameterWidget* param_widget_;
 
-    // Run control
+    // Left sidebar - Run control
+    QGroupBox* control_group_;
     QPushButton* start_button_;
     QPushButton* cancel_button_;
     QLabel* status_label_;
 
-    // Progress
-    QGroupBox* progress_group_;
-    QLabel* stage_labels_[4];
-    QProgressBar* progress_bars_[4];
-    QLabel* time_labels_[4];
-
-    // Results and log
+    // Left sidebar - Results summary
     ResultsWidget* results_widget_;
-    LogWidget* log_widget_;
 
-    // Export
+    // Left sidebar - Export
     QPushButton* export_button_;
-    QLabel* total_time_label_;
+
+    // Right area - Log
+    LogWidget* log_widget_;
 
     // Worker thread
     QThread* worker_thread_;
