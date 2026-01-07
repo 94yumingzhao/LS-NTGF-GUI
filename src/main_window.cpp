@@ -5,6 +5,7 @@
 #include "parameter_widget.h"
 #include "results_widget.h"
 #include "log_widget.h"
+#include "cplex_settings_widget.h"
 #include "solver_worker.h"
 #include "generator_widget.h"
 #include "generator_worker.h"
@@ -146,14 +147,25 @@ void MainWindow::SetupUi() {
 
     sidebar_layout->addWidget(mode_tabs_);
 
-    // ========== Right Log Area ==========
+    // ========== Right Panel (CPLEX settings + Log) ==========
+    auto* right_panel = new QWidget(this);
+    auto* right_layout = new QVBoxLayout(right_panel);
+    right_layout->setContentsMargins(0, 0, 0, 0);
+    right_layout->setSpacing(4);
+
+    // CPLEX settings bar (above log)
+    cplex_settings_widget_ = new CplexSettingsWidget(this);
+    right_layout->addWidget(cplex_settings_widget_);
+
+    // Log area (main content)
     log_widget_ = new LogWidget(this);
+    right_layout->addWidget(log_widget_, 1);  // stretch factor 1
 
     // Add to splitter
     main_splitter_->addWidget(sidebar);
-    main_splitter_->addWidget(log_widget_);
+    main_splitter_->addWidget(right_panel);
     main_splitter_->setStretchFactor(0, 0);  // Sidebar: fixed
-    main_splitter_->setStretchFactor(1, 1);  // Log: stretch
+    main_splitter_->setStretchFactor(1, 1);  // Right panel: stretch
     main_splitter_->setSizes({280, 720});
 
     main_layout->addWidget(main_splitter_);
@@ -367,6 +379,11 @@ void MainWindow::OnStartOptimization() {
         param_widget_->GetBPenalty(),
         param_widget_->GetMergeEnabled(),
         param_widget_->GetBigOrderThreshold()
+    );
+    solver_worker_->SetCplexParameters(
+        cplex_settings_widget_->GetWorkDir(),
+        cplex_settings_widget_->GetWorkMem(),
+        cplex_settings_widget_->GetThreads()
     );
     solver_worker_->SetInstanceInfo(inst_n_, inst_t_, inst_g_, inst_f_, inst_difficulty_);
 

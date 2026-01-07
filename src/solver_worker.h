@@ -30,6 +30,7 @@ public:
     void SetAlgorithm(AlgorithmType algo);
     void SetParameters(double runtime_limit, int u_penalty,
                        int b_penalty, bool merge_enabled, double big_order_threshold);
+    void SetCplexParameters(const QString& workdir, int workmem, int threads);
     void SetInstanceInfo(int n, int t, int g, int f, double difficulty);
 
     AlgorithmType GetAlgorithm() const { return algorithm_; }
@@ -65,6 +66,11 @@ private:
     int b_penalty_;
     bool merge_enabled_;
     double big_order_threshold_;
+
+    // CPLEX parameters
+    QString cplex_workdir_;
+    int cplex_workmem_;
+    int cplex_threads_;
 
     // Instance info for output filename
     int inst_n_;
