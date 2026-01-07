@@ -12,6 +12,7 @@
 class ParameterWidget;
 class ResultsWidget;
 class LogWidget;
+class CplexSettingsWidget;
 class SolverWorker;
 class GeneratorWidget;
 class GeneratorWorker;
@@ -85,6 +86,9 @@ private:
 
     // Left sidebar - Export
     QPushButton* export_button_;
+
+    // Right area - CPLEX settings (above log)
+    CplexSettingsWidget* cplex_settings_widget_;
 
     // Right area - Log
     LogWidget* log_widget_;
