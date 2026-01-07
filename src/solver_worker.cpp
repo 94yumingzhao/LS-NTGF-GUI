@@ -49,6 +49,12 @@ void SolverWorker::SetParameters(double runtime_limit, int u_penalty,
     big_order_threshold_ = big_order_threshold;
 }
 
+void SolverWorker::SetCplexParameters(const QString& workdir, int workmem, int threads) {
+    cplex_workdir_ = workdir;
+    cplex_workmem_ = workmem;
+    cplex_threads_ = threads;
+}
+
 void SolverWorker::SetInstanceInfo(int n, int t, int g, int f, double difficulty) {
     inst_n_ = n;
     inst_t_ = t;
@@ -116,10 +122,10 @@ void SolverWorker::RunOptimization() {
     emit LogMessage(QString::fromUtf8("数据: %1").arg(data_path_));
 
     // 准备输出目录
-    QString output_dir = "D:/YM-Code/LS-NTGF-GUI/output";
-    QDir().mkpath(output_dir);
-    QDir().mkpath(output_dir + "/results");
-    QDir().mkpath(output_dir + "/logs");
+    QString logs_dir = "D:/YM-Code/LS-NTGF-GUI/logs";
+    QString results_dir = "D:/YM-Code/LS-NTGF-GUI/results";
+    QDir().mkpath(logs_dir);
+    QDir().mkpath(results_dir);
 
     // 生成时间戳和文件名
     QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss");
@@ -128,8 +134,7 @@ void SolverWorker::RunOptimization() {
         .arg(inst_difficulty_, 0, 'f', 2)
         .arg(timestamp);
 
-    QString solution_path = output_dir + "/results/solution_" + GetAlgorithmName() + "_" + file_base;
-    QString log_base = output_dir + "/logs/log_" + GetAlgorithmName() + "_" + file_base;
+    QString log_base = logs_dir + "/log_" + GetAlgorithmName() + "_" + file_base;
 
     log_file_path_ = log_base + ".log";
     log_file_pos_ = 0;
@@ -138,7 +143,7 @@ void SolverWorker::RunOptimization() {
     QStringList args;
     args << QString("--algo=%1").arg(GetAlgorithmName());
     args << "-f" << data_path_;
-    args << "-o" << solution_path;
+    args << "-o" << results_dir;
     args << "-l" << log_base;
     args << "-t" << QString::number(runtime_limit_, 'f', 1);
     args << "--u-penalty" << QString::number(u_penalty_);
@@ -148,6 +153,13 @@ void SolverWorker::RunOptimization() {
     } else {
         args << "--no-merge";
     }
+
+    // CPLEX parameters
+    if (!cplex_workdir_.isEmpty()) {
+        args << "--cplex-workdir" << cplex_workdir_;
+    }
+    args << "--cplex-workmem" << QString::number(cplex_workmem_);
+    args << "--cplex-threads" << QString::number(cplex_threads_);
 
     emit LogMessage(QString::fromUtf8("参数: %1").arg(args.join(" ")));
 
