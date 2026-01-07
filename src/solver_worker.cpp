@@ -121,9 +121,9 @@ void SolverWorker::RunOptimization() {
     emit LogMessage(QString::fromUtf8("算法: %1").arg(GetAlgorithmName()));
     emit LogMessage(QString::fromUtf8("数据: %1").arg(data_path_));
 
-    // 准备输出目录
-    QString logs_dir = "D:/YM-Code/LS-NTGF-GUI/logs";
-    QString results_dir = "D:/YM-Code/LS-NTGF-GUI/results";
+    // 准备输出目录 (使用求解器自身的目录)
+    QString logs_dir = "D:/YM-Code/LS-NTGF-All/logs";
+    QString results_dir = "D:/YM-Code/LS-NTGF-All/results";
     QDir().mkpath(logs_dir);
     QDir().mkpath(results_dir);
 
