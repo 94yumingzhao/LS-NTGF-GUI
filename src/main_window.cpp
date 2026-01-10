@@ -9,6 +9,7 @@
 #include "solver_worker.h"
 #include "generator_widget.h"
 #include "generator_worker.h"
+#include "analysis_widget.h"
 
 #include <QMenuBar>
 #include <QTabWidget>
@@ -59,120 +60,152 @@ MainWindow::~MainWindow() {
 
 void MainWindow::SetupUi() {
     auto* central = new QWidget(this);
-    auto* main_layout = new QHBoxLayout(central);
-    main_layout->setSpacing(8);
-    main_layout->setContentsMargins(8, 8, 8, 8);
+    auto* main_layout = new QVBoxLayout(central);
+    main_layout->setSpacing(0);
+    main_layout->setContentsMargins(0, 0, 0, 0);
 
-    // Main splitter: left sidebar + right log
-    main_splitter_ = new QSplitter(Qt::Horizontal, this);
-
-    // ========== Left Sidebar ==========
-    auto* sidebar = new QWidget(this);
-    auto* sidebar_layout = new QVBoxLayout(sidebar);
-    sidebar_layout->setSpacing(8);
-    sidebar_layout->setContentsMargins(0, 0, 0, 0);
-
-    // --- Mode Tabs (Solver / Generator) ---
+    // 顶层Tab: 求解 | 算例生成 | 结果分析
     mode_tabs_ = new QTabWidget(this);
 
-    // ===== Solver Tab =====
-    auto* solver_tab = new QWidget();
-    auto* solver_layout = new QVBoxLayout(solver_tab);
-    solver_layout->setSpacing(8);
-    solver_layout->setContentsMargins(4, 4, 4, 4);
+    // ===== Tab 1: 求解页 =====
+    auto* solver_page = new QWidget(this);
+    auto* solver_page_layout = new QHBoxLayout(solver_page);
+    solver_page_layout->setSpacing(8);
+    solver_page_layout->setContentsMargins(8, 8, 8, 8);
 
-    // File Selection Group
-    file_group_ = new QGroupBox(QString::fromUtf8(""), solver_tab);
+    // 左侧控制面板
+    auto* solver_left = new QWidget(this);
+    solver_left->setMinimumWidth(260);
+    solver_left->setMaximumWidth(400);
+    auto* solver_left_layout = new QVBoxLayout(solver_left);
+    solver_left_layout->setSpacing(8);
+    solver_left_layout->setContentsMargins(0, 0, 0, 0);
+
+    // 文件选择
+    file_group_ = new QGroupBox(QString::fromUtf8("数据文件"), solver_left);
     auto* file_layout = new QVBoxLayout(file_group_);
     file_layout->setSpacing(4);
+    file_layout->setContentsMargins(8, 12, 8, 8);
 
     auto* browse_layout = new QHBoxLayout();
     browse_button_ = new QPushButton(QString::fromUtf8("..."), this);
     browse_button_->setFixedWidth(32);
-    browse_button_->setToolTip(QString::fromUtf8(""));
     file_path_edit_ = new QLineEdit(this);
     file_path_edit_->setReadOnly(true);
-    file_path_edit_->setPlaceholderText(QString::fromUtf8("CSV..."));
-    browse_layout->addWidget(browse_button_);
+    file_path_edit_->setPlaceholderText(QString::fromUtf8("选择CSV文件..."));
     browse_layout->addWidget(file_path_edit_);
+    browse_layout->addWidget(browse_button_);
     file_layout->addLayout(browse_layout);
 
     file_info_label_ = new QLabel(QString::fromUtf8("--"), this);
-    file_info_label_->setStyleSheet("color: gray; font-size: 9pt;");
+    file_info_label_->setStyleSheet("color: #666; font-size: 9pt;");
     file_layout->addWidget(file_info_label_);
 
-    solver_layout->addWidget(file_group_);
+    solver_left_layout->addWidget(file_group_);
 
-    // Parameters Widget
-    param_widget_ = new ParameterWidget(solver_tab);
-    solver_layout->addWidget(param_widget_);
+    // 算法参数
+    param_widget_ = new ParameterWidget(solver_left);
+    solver_left_layout->addWidget(param_widget_);
 
-    // Control Group
-    control_group_ = new QGroupBox(solver_tab);
+    // 运行控制
+    control_group_ = new QGroupBox(QString::fromUtf8("运行"), solver_left);
     auto* control_layout = new QVBoxLayout(control_group_);
-    control_layout->setSpacing(4);
+    control_layout->setSpacing(6);
+    control_layout->setContentsMargins(8, 12, 8, 8);
 
     auto* button_layout = new QHBoxLayout();
-    start_button_ = new QPushButton(QString::fromUtf8("\u8fd0\u884c"), this);
+    start_button_ = new QPushButton(QString::fromUtf8("运行"), this);
     start_button_->setMinimumHeight(32);
     start_button_->setStyleSheet("font-weight: bold;");
-    cancel_button_ = new QPushButton(QString::fromUtf8("\u53d6\u6d88"), this);
+    cancel_button_ = new QPushButton(QString::fromUtf8("取消"), this);
     cancel_button_->setMinimumHeight(32);
     button_layout->addWidget(start_button_);
     button_layout->addWidget(cancel_button_);
     control_layout->addLayout(button_layout);
 
-    status_label_ = new QLabel(QString::fromUtf8("\u5c31\u7eea"), this);
+    status_label_ = new QLabel(QString::fromUtf8("就绪"), this);
     status_label_->setAlignment(Qt::AlignCenter);
+    status_label_->setStyleSheet("color: #666;");
     control_layout->addWidget(status_label_);
 
-    solver_layout->addWidget(control_group_);
+    solver_left_layout->addWidget(control_group_);
 
-    // Results Widget
-    results_widget_ = new ResultsWidget(solver_tab);
-    solver_layout->addWidget(results_widget_);
+    // 结果摘要
+    results_widget_ = new ResultsWidget(solver_left);
+    solver_left_layout->addWidget(results_widget_);
 
-    // Export Button
-    export_button_ = new QPushButton(QString::fromUtf8("\u5bfc\u51fa\u65e5\u5fd7..."), solver_tab);
-    solver_layout->addWidget(export_button_);
+    // 导出按钮
+    export_button_ = new QPushButton(QString::fromUtf8("导出日志..."), solver_left);
+    solver_left_layout->addWidget(export_button_);
 
-    solver_layout->addStretch();
+    solver_left_layout->addStretch();
 
-    // ===== Generator Tab =====
+    // 右侧面板 (CPLEX设置 + 日志)
+    auto* solver_right = new QWidget(this);
+    auto* solver_right_layout = new QVBoxLayout(solver_right);
+    solver_right_layout->setSpacing(8);
+    solver_right_layout->setContentsMargins(0, 0, 0, 0);
+
+    cplex_settings_widget_ = new CplexSettingsWidget(solver_right);
+    solver_right_layout->addWidget(cplex_settings_widget_);
+
+    log_widget_ = new LogWidget(solver_right);
+    solver_right_layout->addWidget(log_widget_, 1);
+
+    // Splitter with visible handle
+    main_splitter_ = new QSplitter(Qt::Horizontal, this);
+    main_splitter_->addWidget(solver_left);
+    main_splitter_->addWidget(solver_right);
+    main_splitter_->setStretchFactor(0, 0);
+    main_splitter_->setStretchFactor(1, 1);
+    main_splitter_->setHandleWidth(6);
+    main_splitter_->setStyleSheet(
+        "QSplitter::handle { background-color: #dee2e6; }"
+        "QSplitter::handle:hover { background-color: #adb5bd; }"
+        "QSplitter::handle:pressed { background-color: #868e96; }");
+
+    solver_page_layout->addWidget(main_splitter_);
+
+    // ===== Tab 2: 算例生成页 =====
+    auto* generator_page = new QWidget(this);
+    auto* generator_page_layout = new QHBoxLayout(generator_page);
+    generator_page_layout->setSpacing(8);
+    generator_page_layout->setContentsMargins(8, 8, 8, 8);
+
+    // 左侧生成器控制
     generator_widget_ = new GeneratorWidget();
+    generator_widget_->setMinimumWidth(300);
+    generator_widget_->setMaximumWidth(500);
 
-    // Add tabs
-    mode_tabs_->addTab(solver_tab, QString::fromUtf8("\u6c42\u89e3\u5668"));
-    mode_tabs_->addTab(generator_widget_, QString::fromUtf8("\u7b97\u4f8b\u751f\u6210"));
+    // 右侧日志
+    generator_log_widget_ = new LogWidget(generator_page);
 
-    sidebar_layout->addWidget(mode_tabs_);
+    // Splitter with visible handle
+    auto* generator_splitter = new QSplitter(Qt::Horizontal, generator_page);
+    generator_splitter->addWidget(generator_widget_);
+    generator_splitter->addWidget(generator_log_widget_);
+    generator_splitter->setStretchFactor(0, 0);
+    generator_splitter->setStretchFactor(1, 1);
+    generator_splitter->setHandleWidth(6);
+    generator_splitter->setStyleSheet(
+        "QSplitter::handle { background-color: #dee2e6; }"
+        "QSplitter::handle:hover { background-color: #adb5bd; }"
+        "QSplitter::handle:pressed { background-color: #868e96; }");
 
-    // ========== Right Panel (CPLEX settings + Log) ==========
-    auto* right_panel = new QWidget(this);
-    auto* right_layout = new QVBoxLayout(right_panel);
-    right_layout->setContentsMargins(0, 0, 0, 0);
-    right_layout->setSpacing(4);
+    generator_page_layout->addWidget(generator_splitter);
 
-    // CPLEX settings bar (above log)
-    cplex_settings_widget_ = new CplexSettingsWidget(this);
-    right_layout->addWidget(cplex_settings_widget_);
+    // ===== Tab 3: 结果分析页 (全宽) =====
+    analysis_widget_ = new AnalysisWidget();
 
-    // Log area (main content)
-    log_widget_ = new LogWidget(this);
-    right_layout->addWidget(log_widget_, 1);  // stretch factor 1
+    // 添加三个顶层Tab
+    mode_tabs_->addTab(solver_page, QString::fromUtf8("求解"));
+    mode_tabs_->addTab(generator_page, QString::fromUtf8("算例生成"));
+    mode_tabs_->addTab(analysis_widget_, QString::fromUtf8("结果分析"));
 
-    // Add to splitter
-    main_splitter_->addWidget(sidebar);
-    main_splitter_->addWidget(right_panel);
-    main_splitter_->setStretchFactor(0, 0);  // Sidebar: fixed
-    main_splitter_->setStretchFactor(1, 1);  // Right panel: stretch
-    main_splitter_->setSizes({280, 720});
-
-    main_layout->addWidget(main_splitter_);
+    main_layout->addWidget(mode_tabs_);
     setCentralWidget(central);
 
-    // Status bar
-    statusBar()->showMessage(QString::fromUtf8("\u5c31\u7eea"));
+    statusBar()->showMessage(QString::fromUtf8("就绪"));
 }
 
 void MainWindow::SetupMenuBar() {
@@ -251,7 +284,7 @@ void MainWindow::SetupConnections() {
     connect(generator_worker_, &GeneratorWorker::GenerationFinished,
             this, &MainWindow::OnGenerationFinished);
     connect(generator_worker_, &GeneratorWorker::LogMessage,
-            this, &MainWindow::OnLogMessage);
+            this, &MainWindow::OnGeneratorLogMessage);
 
     connect(generator_thread_, &QThread::finished, generator_worker_, &QObject::deleteLater);
     generator_thread_->start();
@@ -388,10 +421,11 @@ void MainWindow::OnStartOptimization() {
     solver_worker_->SetInstanceInfo(inst_n_, inst_t_, inst_g_, inst_f_, inst_difficulty_);
 
     QString algo_names[] = {"RF", "RFO", "RR"};
-    log_widget_->AppendLog(QString::fromUtf8("\u5f00\u59cb\u4f18\u5316 (\u7b97\u6cd5: %1)...")
+    log_widget_->AppendLog(QString::fromUtf8("开始优化 (算法: %1)...")
         .arg(algo_names[algo_idx]));
-    statusBar()->showMessage(QString::fromUtf8("\u4f18\u5316\u4e2d..."));
+    statusBar()->showMessage(QString::fromUtf8("优化中..."));
 
+    log_widget_->StartTimer();
     emit StartSolver();
 }
 
@@ -464,17 +498,18 @@ void MainWindow::OnStageCompleted(int stage, double objective, double runtime, d
 }
 
 void MainWindow::OnOptimizationFinished(bool success, const QString& message) {
+    log_widget_->StopTimer();
     UpdateUiState(false);
 
     results_widget_->SetTotalRuntime(total_runtime_);
 
     if (success) {
-        statusBar()->showMessage(QString::fromUtf8("\u4f18\u5316\u5b8c\u6210"));
-        log_widget_->AppendLog(QString::fromUtf8("\u5b8c\u6210: ") + message);
+        statusBar()->showMessage(QString::fromUtf8("优化完成"));
+        log_widget_->AppendLog(QString::fromUtf8("完成: ") + message);
     } else {
-        statusBar()->showMessage(QString::fromUtf8("\u4f18\u5316\u5df2\u505c\u6b62"));
-        log_widget_->AppendLog(QString::fromUtf8("\u5df2\u505c\u6b62: ") + message);
-        QMessageBox::warning(this, QString::fromUtf8("\u4f18\u5316"), message);
+        statusBar()->showMessage(QString::fromUtf8("优化已停止"));
+        log_widget_->AppendLog(QString::fromUtf8("已停止: ") + message);
+        QMessageBox::warning(this, QString::fromUtf8("优化"), message);
     }
 }
 
@@ -487,30 +522,33 @@ void MainWindow::OnLogMessage(const QString& message) {
 // ============================================================================
 
 void MainWindow::OnGenerateRequested(const GeneratorConfig& config) {
-    log_widget_->ClearLog();
-    log_widget_->AppendLog(QString::fromUtf8("\u5f00\u59cb\u751f\u6210\u7b97\u4f8b..."));
+    generator_log_widget_->ClearLog();
+    generator_log_widget_->AppendLog(QString::fromUtf8("开始生成算例..."));
+    generator_log_widget_->StartTimer();
 
     generator_worker_->SetConfig(config);
 
     // Use QMetaObject to invoke across threads
     QMetaObject::invokeMethod(generator_worker_, "RunGeneration", Qt::QueuedConnection);
 
-    statusBar()->showMessage(QString::fromUtf8("\u751f\u6210\u4e2d..."));
+    statusBar()->showMessage(QString::fromUtf8("生成中..."));
 }
 
 void MainWindow::OnGenerationStarted(int count) {
-    log_widget_->AppendLog(QString::fromUtf8("\u6b63\u5728\u751f\u6210 %1 \u4e2a\u7b97\u4f8b...").arg(count));
+    generator_log_widget_->AppendLog(QString::fromUtf8("正在生成 %1 个算例...").arg(count));
 }
 
 void MainWindow::OnInstanceGenerated(int index, const QString& filename) {
-    log_widget_->AppendLog(QString::fromUtf8("[%1] \u5df2\u751f\u6210: %2").arg(index).arg(filename));
+    generator_log_widget_->AppendLog(QString::fromUtf8("[%1] 已生成: %2").arg(index).arg(filename));
 }
 
 void MainWindow::OnGenerationFinished(bool success, const QString& message,
                                        const QStringList& files) {
+    generator_log_widget_->StopTimer();
+
     if (success) {
-        statusBar()->showMessage(QString::fromUtf8("\u751f\u6210\u5b8c\u6210"));
-        log_widget_->AppendLog(QString::fromUtf8("\u751f\u6210\u5b8c\u6210: ") + message);
+        statusBar()->showMessage(QString::fromUtf8("生成完成"));
+        generator_log_widget_->AppendLog(QString::fromUtf8("生成完成: ") + message);
 
         // Offer to load the first generated file
         if (!files.isEmpty()) {
@@ -518,10 +556,14 @@ void MainWindow::OnGenerationFinished(bool success, const QString& message,
             if (!first_file.startsWith("D:")) {
                 first_file = "D:/YM-Code/LS-NTGF-Data-Cap/" + first_file;
             }
-            log_widget_->AppendLog(QString::fromUtf8("\u7b97\u4f8b\u5df2\u751f\u6210\uff0c\u53ef\u7528\u4e8e\u6c42\u89e3: ") + first_file);
+            generator_log_widget_->AppendLog(QString::fromUtf8("算例已生成，可用于求解: ") + first_file);
         }
     } else {
-        statusBar()->showMessage(QString::fromUtf8("\u751f\u6210\u5931\u8d25"));
-        log_widget_->AppendLog(QString::fromUtf8("\u751f\u6210\u5931\u8d25: ") + message);
+        statusBar()->showMessage(QString::fromUtf8("生成失败"));
+        generator_log_widget_->AppendLog(QString::fromUtf8("生成失败: ") + message);
     }
+}
+
+void MainWindow::OnGeneratorLogMessage(const QString& message) {
+    generator_log_widget_->AppendLog(message);
 }
