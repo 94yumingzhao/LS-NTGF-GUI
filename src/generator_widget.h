@@ -8,7 +8,6 @@
 #include <QWidget>
 #include "difficulty_mapper.h"
 
-class QComboBox;
 class QSpinBox;
 class QDoubleSpinBox;
 class QCheckBox;
@@ -54,8 +53,10 @@ private:
     QToolButton* CreateHelpButton(const QString& tooltip, const QString& detail_title,
                                    const QString& detail_content);
 
-    // Mode selection
-    QComboBox* mode_combo_;
+    // Mode selection buttons
+    QPushButton* quick_mode_button_;
+    QPushButton* manual_mode_button_;
+    bool is_quick_mode_;
 
     // Quick mode widgets
     QGroupBox* quick_group_;

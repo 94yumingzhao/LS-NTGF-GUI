@@ -16,6 +16,7 @@ class CplexSettingsWidget;
 class SolverWorker;
 class GeneratorWidget;
 class GeneratorWorker;
+class AnalysisWidget;
 class QLineEdit;
 class QLabel;
 class QPushButton;
@@ -54,6 +55,7 @@ private slots:
     void OnGenerationStarted(int count);
     void OnInstanceGenerated(int index, const QString& filename);
     void OnGenerationFinished(bool success, const QString& message, const QStringList& files);
+    void OnGeneratorLogMessage(const QString& message);
 
 private:
     void SetupUi();
@@ -93,8 +95,14 @@ private:
     // Right area - Log
     LogWidget* log_widget_;
 
+    // Generator page - Log
+    LogWidget* generator_log_widget_;
+
     // Left sidebar - Generator tab
     GeneratorWidget* generator_widget_;
+
+    // Left sidebar - Analysis tab
+    AnalysisWidget* analysis_widget_;
 
     // Tab widget for mode switching
     QTabWidget* mode_tabs_;

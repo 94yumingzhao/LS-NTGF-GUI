@@ -64,6 +64,15 @@ set(GUI_SOURCES
     src/generator_widget.cpp
     src/generator_worker.cpp
     src/difficulty_mapper.cpp
+    src/analysis_widget.cpp
+    src/panels/overview_panel.cpp
+    src/panels/capacity_panel.cpp
+    src/panels/setup_panel.cpp
+    src/panels/variables_panel.cpp
+    src/widgets/metric_card.cpp
+    src/widgets/cost_bar.cpp
+    src/widgets/line_chart.cpp
+    src/widgets/heatmap.cpp
 )
 
 set(GUI_HEADERS
@@ -76,6 +85,15 @@ set(GUI_HEADERS
     src/generator_widget.h
     src/generator_worker.h
     src/difficulty_mapper.h
+    src/analysis_widget.h
+    src/panels/overview_panel.h
+    src/panels/capacity_panel.h
+    src/panels/setup_panel.h
+    src/panels/variables_panel.h
+    src/widgets/metric_card.h
+    src/widgets/cost_bar.h
+    src/widgets/line_chart.h
+    src/widgets/heatmap.h
 )
 
 qt_add_executable(LS-NTGF-GUI
