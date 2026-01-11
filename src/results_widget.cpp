@@ -79,7 +79,7 @@ void ResultsWidget::SetupTableForRR() {
 
     QStringList stages = {
         QString::fromUtf8("初始"),
-        QString::fromUtf8("结转"),
+        QString::fromUtf8("跨期"),
         QString::fromUtf8("最终")
     };
     for (int i = 0; i < 3; ++i) {

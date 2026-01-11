@@ -331,7 +331,7 @@ void SolverWorker::ParseStatusLine(const QString& line) {
         QString name;
         switch (stage) {
             case 1: name = QString::fromUtf8("阶段1 - 初始优化"); break;
-            case 2: name = QString::fromUtf8("阶段2 - 结转优化"); break;
+            case 2: name = QString::fromUtf8("阶段2 - 跨期优化"); break;
             case 3: name = QString::fromUtf8("阶段3 - 最终优化"); break;
             default: name = QString::fromUtf8("阶段 %1").arg(stage); break;
         }
