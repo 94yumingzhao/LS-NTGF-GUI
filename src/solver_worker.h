@@ -29,9 +29,15 @@ public:
     void SetDataPath(const QString& path);
     void SetAlgorithm(AlgorithmType algo);
     void SetParameters(double runtime_limit, int u_penalty,
-                       int b_penalty, bool merge_enabled, double big_order_threshold);
+                       int b_penalty, bool merge_enabled, double big_order_threshold,
+                       int machine_capacity);
     void SetCplexParameters(const QString& workdir, int workmem, int threads);
     void SetInstanceInfo(int n, int t, int g, int f, double difficulty);
+
+    // Advanced algorithm parameters
+    void SetRFParameters(int window, int step, double time, int retries);
+    void SetFOParameters(int window, int step, int rounds, int buffer, double time);
+    void SetRRParameters(double capacity, double bonus);
 
     AlgorithmType GetAlgorithm() const { return algorithm_; }
 
@@ -66,11 +72,29 @@ private:
     int b_penalty_;
     bool merge_enabled_;
     double big_order_threshold_;
+    int machine_capacity_;
 
     // CPLEX parameters
     QString cplex_workdir_;
     int cplex_workmem_;
     int cplex_threads_;
+
+    // RF parameters
+    int rf_window_;
+    int rf_step_;
+    double rf_time_;
+    int rf_retries_;
+
+    // FO parameters
+    int fo_window_;
+    int fo_step_;
+    int fo_rounds_;
+    int fo_buffer_;
+    double fo_time_;
+
+    // RR parameters
+    double rr_capacity_;
+    double rr_bonus_;
 
     // Instance info for output filename
     int inst_n_;

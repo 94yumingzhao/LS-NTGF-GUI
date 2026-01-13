@@ -17,10 +17,25 @@ SolverWorker::SolverWorker(QObject* parent)
     , b_penalty_(100)
     , merge_enabled_(true)
     , big_order_threshold_(1000.0)
+    , machine_capacity_(1440)
     , solver_process_(nullptr)
     , log_reader_(nullptr)
     , log_file_pos_(0)
-    , cancel_requested_(false) {
+    , cancel_requested_(false)
+    // RF defaults
+    , rf_window_(6)
+    , rf_step_(1)
+    , rf_time_(60.0)
+    , rf_retries_(3)
+    // FO defaults
+    , fo_window_(8)
+    , fo_step_(3)
+    , fo_rounds_(2)
+    , fo_buffer_(1)
+    , fo_time_(30.0)
+    // RR defaults
+    , rr_capacity_(1.2)
+    , rr_bonus_(50.0) {
 }
 
 SolverWorker::~SolverWorker() {
@@ -41,12 +56,34 @@ void SolverWorker::SetAlgorithm(AlgorithmType algo) {
 }
 
 void SolverWorker::SetParameters(double runtime_limit, int u_penalty,
-                                  int b_penalty, bool merge_enabled, double big_order_threshold) {
+                                  int b_penalty, bool merge_enabled, double big_order_threshold,
+                                  int machine_capacity) {
     runtime_limit_ = runtime_limit;
     u_penalty_ = u_penalty;
     b_penalty_ = b_penalty;
     merge_enabled_ = merge_enabled;
     big_order_threshold_ = big_order_threshold;
+    machine_capacity_ = machine_capacity;
+}
+
+void SolverWorker::SetRFParameters(int window, int step, double time, int retries) {
+    rf_window_ = window;
+    rf_step_ = step;
+    rf_time_ = time;
+    rf_retries_ = retries;
+}
+
+void SolverWorker::SetFOParameters(int window, int step, int rounds, int buffer, double time) {
+    fo_window_ = window;
+    fo_step_ = step;
+    fo_rounds_ = rounds;
+    fo_buffer_ = buffer;
+    fo_time_ = time;
+}
+
+void SolverWorker::SetRRParameters(double capacity, double bonus) {
+    rr_capacity_ = capacity;
+    rr_bonus_ = bonus;
 }
 
 void SolverWorker::SetCplexParameters(const QString& workdir, int workmem, int threads) {
@@ -148,6 +185,7 @@ void SolverWorker::RunOptimization() {
     args << "-t" << QString::number(runtime_limit_, 'f', 1);
     args << "--u-penalty" << QString::number(u_penalty_);
     args << "--b-penalty" << QString::number(b_penalty_);
+    args << "--capacity" << QString::number(machine_capacity_);
     if (merge_enabled_) {
         args << "--threshold" << QString::number(big_order_threshold_, 'f', 1);
     } else {
@@ -160,6 +198,29 @@ void SolverWorker::RunOptimization() {
     }
     args << "--cplex-workmem" << QString::number(cplex_workmem_);
     args << "--cplex-threads" << QString::number(cplex_threads_);
+
+    // RF parameters (for RF and RFO algorithms)
+    if (algorithm_ == AlgorithmType::RF || algorithm_ == AlgorithmType::RFO) {
+        args << "--rf-window" << QString::number(rf_window_);
+        args << "--rf-step" << QString::number(rf_step_);
+        args << "--rf-time" << QString::number(rf_time_, 'f', 1);
+        args << "--rf-retries" << QString::number(rf_retries_);
+    }
+
+    // FO parameters (for RFO algorithm only)
+    if (algorithm_ == AlgorithmType::RFO) {
+        args << "--fo-window" << QString::number(fo_window_);
+        args << "--fo-step" << QString::number(fo_step_);
+        args << "--fo-rounds" << QString::number(fo_rounds_);
+        args << "--fo-buffer" << QString::number(fo_buffer_);
+        args << "--fo-time" << QString::number(fo_time_, 'f', 1);
+    }
+
+    // RR parameters (for RR algorithm only)
+    if (algorithm_ == AlgorithmType::RR) {
+        args << "--rr-capacity" << QString::number(rr_capacity_, 'f', 2);
+        args << "--rr-bonus" << QString::number(rr_bonus_, 'f', 1);
+    }
 
     emit LogMessage(QString::fromUtf8("参数: %1").arg(args.join(" ")));
 

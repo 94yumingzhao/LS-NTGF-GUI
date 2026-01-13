@@ -411,12 +411,31 @@ void MainWindow::OnStartOptimization() {
         param_widget_->GetUPenalty(),
         param_widget_->GetBPenalty(),
         param_widget_->GetMergeEnabled(),
-        param_widget_->GetBigOrderThreshold()
+        param_widget_->GetBigOrderThreshold(),
+        param_widget_->GetMachineCapacity()
     );
     solver_worker_->SetCplexParameters(
         cplex_settings_widget_->GetWorkDir(),
         cplex_settings_widget_->GetWorkMem(),
         cplex_settings_widget_->GetThreads()
+    );
+    // Set advanced algorithm parameters
+    solver_worker_->SetRFParameters(
+        param_widget_->GetRFWindow(),
+        param_widget_->GetRFStep(),
+        param_widget_->GetRFTime(),
+        param_widget_->GetRFRetries()
+    );
+    solver_worker_->SetFOParameters(
+        param_widget_->GetFOWindow(),
+        param_widget_->GetFOStep(),
+        param_widget_->GetFORounds(),
+        param_widget_->GetFOBuffer(),
+        param_widget_->GetFOTime()
+    );
+    solver_worker_->SetRRParameters(
+        param_widget_->GetRRCapacity(),
+        param_widget_->GetRRBonus()
     );
     solver_worker_->SetInstanceInfo(inst_n_, inst_t_, inst_g_, inst_f_, inst_difficulty_);
 
