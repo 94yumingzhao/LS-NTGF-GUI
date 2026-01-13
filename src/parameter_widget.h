@@ -56,12 +56,11 @@ public slots:
 
 private slots:
     void OnAlgorithmChanged(int index);
-    void ToggleAdvancedParams(bool expanded);
 
 private:
     void SetupUi();
     void SetupBasicParams(QVBoxLayout* layout);
-    void SetupAdvancedParams(QVBoxLayout* layout);
+    void SetupAlgorithmParams(QVBoxLayout* layout);
     void UpdateParamGroupStates(int algorithmIndex);
 
     // Basic parameters
@@ -73,10 +72,6 @@ private:
     QCheckBox* merge_checkbox_;
     QDoubleSpinBox* big_order_threshold_spin_;
     QPushButton* reset_button_;
-
-    // Advanced section
-    QPushButton* advanced_toggle_;
-    QWidget* advanced_container_;
 
     // RF parameters
     QGroupBox* rf_group_;
