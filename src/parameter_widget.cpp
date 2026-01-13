@@ -23,14 +23,17 @@ void ParameterWidget::SetupUi() {
     auto* layout = new QVBoxLayout(this);
 
     SetupBasicParams(layout);
-    SetupAdvancedParams(layout);
+    SetupAlgorithmParams(layout);
 
     // Reset button
-    reset_button_ = new QPushButton(QString::fromUtf8("重置"), this);
+    reset_button_ = new QPushButton(QString::fromUtf8("重置默认值"), this);
     connect(reset_button_, &QPushButton::clicked, this, &ParameterWidget::ResetDefaults);
     layout->addWidget(reset_button_);
 
     layout->addStretch();
+
+    // Set initial visibility based on default algorithm (RF)
+    UpdateParamGroupStates(0);
 }
 
 void ParameterWidget::SetupBasicParams(QVBoxLayout* layout) {
@@ -89,21 +92,9 @@ void ParameterWidget::SetupBasicParams(QVBoxLayout* layout) {
     connect(merge_checkbox_, &QCheckBox::toggled, big_order_threshold_spin_, &QWidget::setEnabled);
 }
 
-void ParameterWidget::SetupAdvancedParams(QVBoxLayout* layout) {
-    // Advanced toggle button
-    advanced_toggle_ = new QPushButton(QString::fromUtf8("▶ 高级算法参数"), this);
-    advanced_toggle_->setCheckable(true);
-    advanced_toggle_->setChecked(false);
-    advanced_toggle_->setStyleSheet("QPushButton { text-align: left; padding: 5px; }");
-    layout->addWidget(advanced_toggle_);
-
-    // Advanced container
-    advanced_container_ = new QWidget(this);
-    auto* advanced_layout = new QVBoxLayout(advanced_container_);
-    advanced_layout->setContentsMargins(0, 0, 0, 0);
-
+void ParameterWidget::SetupAlgorithmParams(QVBoxLayout* layout) {
     // RF Parameters Group
-    rf_group_ = new QGroupBox(QString::fromUtf8("RF参数"), advanced_container_);
+    rf_group_ = new QGroupBox(QString::fromUtf8("RF参数"), this);
     auto* rf_form = new QFormLayout(rf_group_);
     rf_form->setLabelAlignment(Qt::AlignRight);
 
@@ -129,10 +120,10 @@ void ParameterWidget::SetupAdvancedParams(QVBoxLayout* layout) {
     rf_retries_spin_->setToolTip(QString::fromUtf8("RF窗口扩展失败时的最大重试次数"));
     rf_form->addRow(QString::fromUtf8("最大重试"), rf_retries_spin_);
 
-    advanced_layout->addWidget(rf_group_);
+    layout->addWidget(rf_group_);
 
     // FO Parameters Group
-    fo_group_ = new QGroupBox(QString::fromUtf8("FO参数 (RFO专用)"), advanced_container_);
+    fo_group_ = new QGroupBox(QString::fromUtf8("FO参数"), this);
     auto* fo_form = new QFormLayout(fo_group_);
     fo_form->setLabelAlignment(Qt::AlignRight);
 
@@ -163,10 +154,10 @@ void ParameterWidget::SetupAdvancedParams(QVBoxLayout* layout) {
     fo_time_spin_->setToolTip(QString::fromUtf8("FO子问题求解时间限制"));
     fo_form->addRow(QString::fromUtf8("子问题时限"), fo_time_spin_);
 
-    advanced_layout->addWidget(fo_group_);
+    layout->addWidget(fo_group_);
 
     // RR Parameters Group
-    rr_group_ = new QGroupBox(QString::fromUtf8("RR参数 (RR专用)"), advanced_container_);
+    rr_group_ = new QGroupBox(QString::fromUtf8("RR参数"), this);
     auto* rr_form = new QFormLayout(rr_group_);
     rr_form->setLabelAlignment(Qt::AlignRight);
 
@@ -184,13 +175,7 @@ void ParameterWidget::SetupAdvancedParams(QVBoxLayout* layout) {
     rr_bonus_spin_->setToolTip(QString::fromUtf8("连续启动奖励系数，鼓励形成跨期机会"));
     rr_form->addRow(QString::fromUtf8("连续奖励"), rr_bonus_spin_);
 
-    advanced_layout->addWidget(rr_group_);
-
-    advanced_container_->setVisible(false);
-    layout->addWidget(advanced_container_);
-
-    // Connect toggle
-    connect(advanced_toggle_, &QPushButton::toggled, this, &ParameterWidget::ToggleAdvancedParams);
+    layout->addWidget(rr_group_);
 }
 
 void ParameterWidget::OnAlgorithmChanged(int index) {
@@ -198,26 +183,16 @@ void ParameterWidget::OnAlgorithmChanged(int index) {
     emit AlgorithmChanged(index);
 }
 
-void ParameterWidget::ToggleAdvancedParams(bool expanded) {
-    advanced_container_->setVisible(expanded);
-    advanced_toggle_->setText(expanded
-        ? QString::fromUtf8("▼ 高级算法参数")
-        : QString::fromUtf8("▶ 高级算法参数"));
-
-    if (expanded) {
-        UpdateParamGroupStates(algorithm_combo_->currentIndex());
-    }
-}
-
 void ParameterWidget::UpdateParamGroupStates(int algorithmIndex) {
     // RF: index 0, RFO: index 1, RR: index 2
-    bool rf_enabled = (algorithmIndex == 0 || algorithmIndex == 1);
-    bool fo_enabled = (algorithmIndex == 1);
-    bool rr_enabled = (algorithmIndex == 2);
+    // Show only relevant parameter groups based on selected algorithm
+    bool show_rf = (algorithmIndex == 0 || algorithmIndex == 1);  // RF or RFO
+    bool show_fo = (algorithmIndex == 1);                          // RFO only
+    bool show_rr = (algorithmIndex == 2);                          // RR only
 
-    rf_group_->setEnabled(rf_enabled);
-    fo_group_->setEnabled(fo_enabled);
-    rr_group_->setEnabled(rr_enabled);
+    rf_group_->setVisible(show_rf);
+    fo_group_->setVisible(show_fo);
+    rr_group_->setVisible(show_rr);
 }
 
 void ParameterWidget::ResetDefaults() {
