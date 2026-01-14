@@ -1,0 +1,1881 @@
+[2026-01-07 07:47:54] [系统] 生产计划优化器启动 (统一版本)
+[2026-01-07 07:47:54] [系统] 算法: RF
+[2026-01-07 07:47:54] [系统] 输入文件: D:/YM-Code/LS-NTGF-Data-Cap/data/N300_T30_G5_F5_1.33_20260106_014511.csv
+[2026-01-07 07:47:54] [系统] 输出目录: D:/YM-Code/LS-NTGF-GUI/results
+[2026-01-07 07:47:54] [系统] 时间限制: 30.0秒
+[2026-01-07 07:47:54] 
+========================================
+[2026-01-07 07:47:54]   生产计划优化器 v2.0 (统一版本)
+[2026-01-07 07:47:54]   算法: RF
+[2026-01-07 07:47:54] ========================================
+
+[2026-01-07 07:47:54] [读取] 加载数据: D:/YM-Code/LS-NTGF-Data-Cap/data/N300_T30_G5_F5_1.33_20260106_014511.csv
+[2026-01-07 07:47:54] [数据] 订单=300 周期=30 流向=5 分组=5
+[2026-01-07 07:47:54] [合并] 合并订单（流向-分组策略）...
+[2026-01-07 07:47:54] [合并] 完成: 300 -> 23 订单
+[2026-01-07 07:47:54] [求解] 执行 RF 算法...
+[2026-01-07 07:47:54] [RF] 启动 Relax-and-Fix 算法
+[2026-01-07 07:47:54] [RF] 参数: W=6 S=1 R=3
+[2026-01-07 07:47:54] [RF] 迭代 1: k=0
+[2026-01-07 07:47:54] [RF] 子问题: k=0 W=6 (固定:[0,0) 窗口:[0,6) 放松:[6,30))
+[2026-01-07 07:47:54] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 2 times.
+MIP Presolve eliminated 935 rows and 757 columns.
+MIP Presolve modified 1 coefficients.
+Aggregator did 1 substitutions.
+Reduced MIP has 694 rows, 1243 columns, and 5536 nonzeros.
+Reduced MIP has 54 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (3.19 ticks)
+Probing fixed 0 vars, tightened 33 bounds.
+Probing time = 0.00 sec. (0.63 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 694 rows, 1243 columns, and 5536 nonzeros.
+Reduced MIP has 54 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.08 ticks)
+Probing time = 0.00 sec. (0.57 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.05 sec. (32.04 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                       400500.6248        0.0000           100.00%
+      0     0   250451.3808    25   400500.6248   250451.3808     1317   37.47%
+*     0+    0                       257187.6332   250451.3808             2.62%
+*     0+    0                       251025.9134   250451.3808             0.23%
+      0     0   250647.1928    12   251025.9134      Cuts: 62     1670    0.15%
+*     0+    0                       250708.7988   250647.1928             0.02%
+      0     0   250699.6137    18   250708.7988      Cuts: 82     1795    0.00%
+
+Flow cuts applied:  13
+Mixed integer rounding cuts applied:  18
+Lift and project cuts applied:  2
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.38 sec. (119.24 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.38 sec. (119.24 ticks)
+[2026-01-07 07:47:55] =============== CPLEX END =================
+
+[2026-01-07 07:47:55] [RF] 求解成功: 目标=250708.80 CPU时间=3.81s
+[2026-01-07 07:47:55] [RF] 固定周期 [0, 1)
+[2026-01-07 07:47:55] [RF] 迭代 2: k=1
+[2026-01-07 07:47:55] [RF] 子问题: k=1 W=6 (固定:[0,1) 窗口:[1,7) 放松:[7,30))
+[2026-01-07 07:47:55] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 2 times.
+MIP Presolve eliminated 959 rows and 778 columns.
+Aggregator did 1 substitutions.
+Reduced MIP has 680 rows, 1222 columns, and 5411 nonzeros.
+Reduced MIP has 55 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (3.15 ticks)
+Probing fixed 0 vars, tightened 69 bounds.
+Probing time = 0.00 sec. (0.67 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 680 rows, 1222 columns, and 5411 nonzeros.
+Reduced MIP has 55 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.03 ticks)
+Probing time = 0.00 sec. (0.57 ticks)
+Clique table members: 8.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.06 sec. (30.87 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                       404745.2883      331.0000            99.92%
+      0     0   250667.7088    23   404745.2883   250667.7088     1320   38.07%
+*     0+    0                       257184.4771   250667.7088             2.53%
+*     0     0      integral     0   250719.1606     Cuts: 127     1440    0.00%
+      0     0        cutoff         250719.1606   250719.1606     1440    0.00%
+Elapsed time = 0.28 sec. (91.49 ticks, tree = 0.01 MB, solutions = 3)
+
+Implied bound cuts applied:  1
+Flow cuts applied:  27
+Mixed integer rounding cuts applied:  77
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.28 sec. (91.60 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.28 sec. (91.60 ticks)
+[2026-01-07 07:47:55] =============== CPLEX END =================
+
+[2026-01-07 07:47:55] [RF] 求解成功: 目标=250719.16 CPU时间=2.27s
+[2026-01-07 07:47:55] [RF] 固定周期 [1, 2)
+[2026-01-07 07:47:55] [RF] 迭代 3: k=2
+[2026-01-07 07:47:55] [RF] 子问题: k=2 W=6 (固定:[0,2) 窗口:[2,8) 放松:[8,30))
+[2026-01-07 07:47:55] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 983 rows and 802 columns.
+Reduced MIP has 667 rows, 1199 columns, and 5275 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.66 ticks)
+Probing fixed 0 vars, tightened 69 bounds.
+Probing time = 0.00 sec. (0.66 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 667 rows, 1199 columns, and 5275 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.99 ticks)
+Probing time = 0.00 sec. (0.55 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.06 sec. (27.48 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                       404615.6024      331.0000            99.92%
+      0     0   250674.7528    23   404615.6024   250674.7528     1224   38.05%
+*     0+    0                       257184.4771   250674.7528             2.53%
+*     0+    0                       250730.4644   250674.7528             0.02%
+      0     0        cutoff         250730.4644   250730.4644     1329    0.00%
+Elapsed time = 0.38 sec. (105.75 ticks, tree = 0.01 MB, solutions = 3)
+
+Implied bound cuts applied:  1
+Flow cuts applied:  28
+Mixed integer rounding cuts applied:  95
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.38 sec. (105.86 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.38 sec. (105.86 ticks)
+[2026-01-07 07:47:56] =============== CPLEX END =================
+
+[2026-01-07 07:47:56] [RF] 求解成功: 目标=250730.46 CPU时间=3.62s
+[2026-01-07 07:47:56] [RF] 固定周期 [2, 3)
+[2026-01-07 07:47:56] [RF] 迭代 4: k=3
+[2026-01-07 07:47:56] [RF] 子问题: k=3 W=6 (固定:[0,3) 窗口:[3,9) 放松:[9,30))
+[2026-01-07 07:47:56] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1008 rows and 826 columns.
+Reduced MIP has 652 rows, 1175 columns, and 5131 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.64 ticks)
+Probing fixed 0 vars, tightened 65 bounds.
+Probing time = 0.00 sec. (0.64 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 652 rows, 1175 columns, and 5131 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.94 ticks)
+Probing time = 0.00 sec. (0.54 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.06 sec. (25.54 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                       404543.6872      331.0000            99.92%
+      0     0   250682.3186    23   404543.6872   250682.3186     1232   38.03%
+*     0+    0                       257184.4771   250682.3186             2.53%
+*     0     0      integral     0   250742.8447     Cuts: 128     1374    0.00%
+      0     0        cutoff         250742.8447   250742.8447     1374    0.00%
+Elapsed time = 0.42 sec. (91.24 ticks, tree = 0.01 MB, solutions = 3)
+
+Implied bound cuts applied:  1
+Flow cuts applied:  28
+Mixed integer rounding cuts applied:  75
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.44 sec. (91.36 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.44 sec. (91.36 ticks)
+[2026-01-07 07:47:56] =============== CPLEX END =================
+
+[2026-01-07 07:47:56] [RF] 求解成功: 目标=250742.84 CPU时间=4.59s
+[2026-01-07 07:47:56] [RF] 固定周期 [3, 4)
+[2026-01-07 07:47:56] [RF] 迭代 5: k=4
+[2026-01-07 07:47:56] [RF] 子问题: k=4 W=6 (固定:[0,4) 窗口:[4,10) 放松:[10,30))
+[2026-01-07 07:47:56] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1033 rows and 850 columns.
+Reduced MIP has 637 rows, 1151 columns, and 4987 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.62 ticks)
+Probing fixed 0 vars, tightened 59 bounds.
+Probing time = 0.00 sec. (0.61 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 637 rows, 1151 columns, and 4987 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.89 ticks)
+Probing time = 0.00 sec. (0.52 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.06 sec. (24.91 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                       404507.1503      331.0000            99.92%
+      0     0   250690.4663    23   404507.1503   250690.4663     1130   38.03%
+*     0+    0                       257184.4771   250690.4663             2.53%
+*     0     0      integral     0   250756.4631     Cuts: 132     1277    0.00%
+      0     0        cutoff         250756.4631   250756.4631     1277    0.00%
+Elapsed time = 0.33 sec. (88.65 ticks, tree = 0.01 MB, solutions = 3)
+
+Implied bound cuts applied:  2
+Flow cuts applied:  23
+Mixed integer rounding cuts applied:  75
+Lift and project cuts applied:  2
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.33 sec. (88.76 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.33 sec. (88.76 ticks)
+[2026-01-07 07:47:56] =============== CPLEX END =================
+
+[2026-01-07 07:47:56] [RF] 求解成功: 目标=250756.46 CPU时间=2.77s
+[2026-01-07 07:47:56] [RF] 固定周期 [4, 5)
+[2026-01-07 07:47:56] [RF] 迭代 6: k=5
+[2026-01-07 07:47:56] [RF] 子问题: k=5 W=6 (固定:[0,5) 窗口:[5,11) 放松:[11,30))
+[2026-01-07 07:47:56] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1058 rows and 874 columns.
+Reduced MIP has 622 rows, 1127 columns, and 4843 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.59 ticks)
+Probing fixed 0 vars, tightened 59 bounds.
+Probing time = 0.00 sec. (0.59 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 622 rows, 1127 columns, and 4843 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.84 ticks)
+Probing time = 0.00 sec. (0.51 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.06 sec. (21.76 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                       404480.0291      331.0000            99.92%
+      0     0   250699.2659    23   404480.0291   250699.2659     1136   38.02%
+*     0+    0                       257184.4771   250699.2659             2.52%
+*     0     0      integral     0   250771.5150     Cuts: 145     1286    0.00%
+      0     0        cutoff         250771.5150   250771.5150     1286    0.00%
+Elapsed time = 0.42 sec. (86.30 ticks, tree = 0.01 MB, solutions = 3)
+
+Implied bound cuts applied:  1
+Flow cuts applied:  26
+Mixed integer rounding cuts applied:  90
+Lift and project cuts applied:  2
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.42 sec. (86.41 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.42 sec. (86.41 ticks)
+[2026-01-07 07:47:57] =============== CPLEX END =================
+
+[2026-01-07 07:47:57] [RF] 求解成功: 目标=250771.52 CPU时间=4.55s
+[2026-01-07 07:47:57] [RF] 固定周期 [5, 6)
+[2026-01-07 07:47:57] [RF] 迭代 7: k=6
+[2026-01-07 07:47:57] [RF] 子问题: k=6 W=6 (固定:[0,6) 窗口:[6,12) 放松:[12,30))
+[2026-01-07 07:47:57] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1083 rows and 898 columns.
+Reduced MIP has 607 rows, 1103 columns, and 4699 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.57 ticks)
+Found incumbent of value 3389264.855000 after 0.02 sec. (7.51 ticks)
+Probing fixed 0 vars, tightened 56 bounds.
+Probing time = 0.00 sec. (0.57 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 607 rows, 1103 columns, and 4699 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (1.79 ticks)
+Probing time = 0.00 sec. (0.49 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.06 sec. (27.37 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      3389264.8550      331.0000            99.99%
+*     0+    0                       255649.4800      331.0000            99.87%
+      0     0   250708.7988    23   255649.4800   250708.7988     1302    1.93%
+      0     0   250799.1636    17   255649.4800     Cuts: 130     1511    1.90%
+*     0+    0                       250805.1194   250799.1636             0.00%
+*     0+    0                       250805.1194   250799.1636             0.00%
+
+Implied bound cuts applied:  1
+Flow cuts applied:  12
+Mixed integer rounding cuts applied:  36
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.25 sec. (96.88 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.25 sec. (96.88 ticks)
+[2026-01-07 07:47:57] =============== CPLEX END =================
+
+[2026-01-07 07:47:57] [RF] 求解成功: 目标=250805.12 CPU时间=1.83s
+[2026-01-07 07:47:57] [RF] 固定周期 [6, 7)
+[2026-01-07 07:47:57] [RF] 迭代 8: k=7
+[2026-01-07 07:47:57] [RF] 子问题: k=7 W=6 (固定:[0,7) 窗口:[7,13) 放松:[13,30))
+[2026-01-07 07:47:57] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1108 rows and 922 columns.
+Reduced MIP has 592 rows, 1079 columns, and 4555 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.55 ticks)
+Found incumbent of value 3033531.857567 after 0.00 sec. (6.43 ticks)
+Probing fixed 0 vars, tightened 54 bounds.
+Probing time = 0.02 sec. (0.55 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 592 rows, 1079 columns, and 4555 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.75 ticks)
+Probing time = 0.00 sec. (0.48 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.05 sec. (25.03 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      3033531.8576      331.0000            99.99%
+*     0+    0                       404519.8776      331.0000            99.92%
+      0     0   250719.1606    23   404519.8776   250719.1606     1269   38.02%
+*     0+    0                       257184.4771   250719.1606             2.51%
+      0     0   250834.2182    11   257184.4771     Cuts: 130     1436    2.47%
+*     0+    0                       250884.3387   250834.2182             0.02%
+      0     0   250842.4184    11   250884.3387      Cuts: 13     1571    0.02%
+      0     0   250852.6343    17   250884.3387      Cuts: 57     1681    0.01%
+      0     0   250859.7011    17   250884.3387      Cuts: 82     1757    0.01%
+
+Flow cuts applied:  7
+Mixed integer rounding cuts applied:  52
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.39 sec. (133.29 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.39 sec. (133.29 ticks)
+[2026-01-07 07:47:58] =============== CPLEX END =================
+
+[2026-01-07 07:47:58] [RF] 求解成功: 目标=250884.34 CPU时间=3.89s
+[2026-01-07 07:47:58] [RF] 固定周期 [7, 8)
+[2026-01-07 07:47:58] [RF] 迭代 9: k=8
+[2026-01-07 07:47:58] [RF] 子问题: k=8 W=6 (固定:[0,8) 窗口:[8,14) 放松:[14,30))
+[2026-01-07 07:47:58] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1133 rows and 946 columns.
+Reduced MIP has 577 rows, 1055 columns, and 4411 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.52 ticks)
+Found incumbent of value 3033745.157567 after 0.00 sec. (6.28 ticks)
+Probing fixed 0 vars, tightened 53 bounds.
+Probing time = 0.00 sec. (0.53 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 577 rows, 1055 columns, and 4411 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.70 ticks)
+Probing time = 0.00 sec. (0.46 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.05 sec. (22.18 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      3033745.1576      331.0000            99.99%
+*     0+    0                       404593.2191      331.0000            99.92%
+      0     0   250730.4644    23   404593.2191   250730.4644     1127   38.03%
+*     0+    0                       257184.4771   250730.4644             2.51%
+      0     0   250864.3342    11   257184.4771     Cuts: 125     1442    2.46%
+*     0+    0                       251038.2590   250864.3342             0.07%
+      0     0   250880.2977    17   251038.2590      Cuts: 58     1545    0.06%
+      0     0   250895.0441    23   251038.2590      Cuts: 93     1690    0.06%
+      0     0   250901.9181    11   251038.2590     Cuts: 128     1927    0.05%
+      0     0   250901.9181    11   251038.2590      Cuts: 60     2050    0.05%
+Detecting symmetries...
+
+Implied bound cuts applied:  1
+Flow cuts applied:  44
+Mixed integer rounding cuts applied:  201
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.61 sec. (242.02 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.61 sec. (242.02 ticks)
+[2026-01-07 07:47:58] =============== CPLEX END =================
+
+[2026-01-07 07:47:58] [RF] 求解成功: 目标=251038.26 CPU时间=4.75s
+[2026-01-07 07:47:58] [RF] 固定周期 [8, 9)
+[2026-01-07 07:47:58] [RF] 迭代 10: k=9
+[2026-01-07 07:47:58] [RF] 子问题: k=9 W=6 (固定:[0,9) 窗口:[9,15) 放松:[15,30))
+[2026-01-07 07:47:58] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1158 rows and 970 columns.
+Reduced MIP has 562 rows, 1031 columns, and 4267 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.50 ticks)
+Found incumbent of value 3034082.377567 after 0.02 sec. (6.14 ticks)
+Probing fixed 0 vars, tightened 51 bounds.
+Probing time = 0.00 sec. (0.51 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 562 rows, 1031 columns, and 4267 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.65 ticks)
+Probing time = 0.00 sec. (0.44 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.05 sec. (16.38 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      3034082.3776      331.0000            99.99%
+*     0+    0                       404688.0405      331.0000            99.92%
+      0     0   250742.8447    23   404688.0405   250742.8447      962   38.04%
+*     0+    0                       257184.4771   250742.8447             2.50%
+      0     0   250904.0553    11   257184.4771     Cuts: 123     1214    2.44%
+*     0+    0                       251297.5996   250904.0553             0.16%
+*     0+    0                       251092.7662   250904.0553             0.08%
+      0     0   250915.4539    17   251092.7662      Cuts: 49     1314    0.07%
+      0     0   250938.4644    23   251092.7662     Cuts: 106     1475    0.06%
+      0     0   250946.9021    17   251092.7662     Cuts: 138     1596    0.06%
+      0     0   250949.7142    17   251092.7662      Cuts: 64     1689    0.06%
+Detecting symmetries...
+      0     0   250953.0218    11   251092.7662      Cuts: 57     1867    0.06%
+*     0+    0                       251054.7595   250953.0218             0.04%
+
+Implied bound cuts applied:  1
+Flow cuts applied:  46
+Mixed integer rounding cuts applied:  156
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.72 sec. (203.57 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.72 sec. (203.57 ticks)
+[2026-01-07 07:47:59] =============== CPLEX END =================
+
+[2026-01-07 07:47:59] [RF] 求解成功: 目标=251054.76 CPU时间=8.98s
+[2026-01-07 07:47:59] [RF] 固定周期 [9, 10)
+[2026-01-07 07:47:59] [RF] 迭代 11: k=10
+[2026-01-07 07:47:59] [RF] 子问题: k=10 W=6 (固定:[0,10) 窗口:[10,16) 放松:[16,30))
+[2026-01-07 07:47:59] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1183 rows and 994 columns.
+Reduced MIP has 547 rows, 1007 columns, and 4123 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.30 ticks)
+Found incumbent of value 3034021.217567 after 0.02 sec. (5.80 ticks)
+Probing fixed 0 vars, tightened 49 bounds.
+Probing time = 0.00 sec. (0.49 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 547 rows, 1007 columns, and 4123 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.60 ticks)
+Probing time = 0.00 sec. (0.43 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.05 sec. (18.69 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      3034021.2176      331.0000            99.99%
+*     0+    0                       404831.0303      331.0000            99.92%
+      0     0   250756.4631    23   404831.0303   250756.4631     1053   38.06%
+*     0+    0                       257184.4771   250756.4631             2.50%
+      0     0   250954.8760    17   257184.4771     Cuts: 119     1322    2.42%
+*     0+    0                       251101.3525   250954.8760             0.06%
+      0     0   251027.4503    17   251101.3525      Cuts: 90     1570    0.03%
+      0     0   251028.7928    17   251101.3525      Cuts: 72     1660    0.03%
+      0     0   251030.8509    17   251101.3525      Cuts: 71     1707    0.03%
+*     0+    0                       251082.9587   251030.8509             0.02%
+
+Implied bound cuts applied:  1
+Flow cuts applied:  29
+Mixed integer rounding cuts applied:  87
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.72 sec. (205.31 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.72 sec. (205.31 ticks)
+[2026-01-07 07:48:00] =============== CPLEX END =================
+
+[2026-01-07 07:48:00] [RF] 求解成功: 目标=251082.96 CPU时间=7.67s
+[2026-01-07 07:48:00] [RF] 固定周期 [10, 11)
+[2026-01-07 07:48:00] [RF] 迭代 12: k=11
+[2026-01-07 07:48:00] [RF] 子问题: k=11 W=6 (固定:[0,11) 窗口:[11,17) 放松:[17,30))
+[2026-01-07 07:48:00] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1208 rows and 1018 columns.
+Reduced MIP has 532 rows, 983 columns, and 3979 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.28 ticks)
+Found incumbent of value 3034096.557567 after 0.02 sec. (5.68 ticks)
+Probing fixed 0 vars, tightened 44 bounds.
+Probing time = 0.00 sec. (0.46 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 532 rows, 983 columns, and 3979 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.55 ticks)
+Probing time = 0.00 sec. (0.41 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (13.28 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      3034096.5576      331.0000            99.99%
+*     0+    0                       443998.6023      331.0000            99.93%
+      0     0   250771.5150    23   443998.6023   250771.5150      846   43.52%
+*     0+    0                       257184.4771   250771.5150             2.49%
+      0     0   251009.9481    17   257184.4771     Cuts: 131     1169    2.40%
+      0     0   251052.4635    17   257184.4771     Cuts: 110     1354    2.38%
+*     0+    0                       251132.3098   251052.4635             0.03%
+*     0+    0                       251111.2599   251052.4635             0.02%
+
+Implied bound cuts applied:  1
+Flow cuts applied:  46
+Mixed integer rounding cuts applied:  133
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.33 sec. (102.34 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.33 sec. (102.34 ticks)
+[2026-01-07 07:48:00] =============== CPLEX END =================
+
+[2026-01-07 07:48:00] [RF] 求解成功: 目标=251111.26 CPU时间=3.61s
+[2026-01-07 07:48:00] [RF] 固定周期 [11, 12)
+[2026-01-07 07:48:00] [RF] 迭代 13: k=12
+[2026-01-07 07:48:00] [RF] 子问题: k=12 W=6 (固定:[0,12) 窗口:[12,18) 放松:[18,30))
+[2026-01-07 07:48:00] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1231 rows and 1036 columns.
+Reduced MIP has 519 rows, 965 columns, and 3866 nonzeros.
+Reduced MIP has 57 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.15 ticks)
+Found incumbent of value 3040005.729399 after 0.02 sec. (5.42 ticks)
+Probing fixed 0 vars, tightened 86 bounds.
+Probing time = 0.00 sec. (0.45 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 519 rows, 965 columns, and 3866 nonzeros.
+Reduced MIP has 57 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.52 ticks)
+Probing time = 0.00 sec. (0.38 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (12.01 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      3040005.7294      831.0000            99.97%
+*     0+    0                       449368.6866      831.0000            99.82%
+      0     0   251053.0542    24   449368.6866   251053.0542      710   44.13%
+*     0+    0                       257684.4771   251053.0542             2.57%
+*     0+    0                       251122.8184   251053.0542             0.03%
+      0     0   251090.0734    13   251122.8184      Cuts: 78     1045    0.01%
+      0     0   251100.5755    12   251122.8184      Cuts: 87     1134    0.01%
+
+Flow cuts applied:  31
+Mixed integer rounding cuts applied:  18
+
+Root node processing (before b&c):
+  Real time             =    0.20 sec. (63.09 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.20 sec. (63.09 ticks)
+[2026-01-07 07:48:00] =============== CPLEX END =================
+
+[2026-01-07 07:48:00] [RF] 求解成功: 目标=251122.82 CPU时间=2.00s
+[2026-01-07 07:48:00] [RF] 固定周期 [12, 13)
+[2026-01-07 07:48:00] [RF] 迭代 14: k=13
+[2026-01-07 07:48:00] [RF] 子问题: k=13 W=6 (固定:[0,13) 窗口:[13,19) 放松:[19,30))
+[2026-01-07 07:48:00] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1258 rows and 1061 columns.
+Reduced MIP has 502 rows, 940 columns, and 3711 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.23 ticks)
+Found incumbent of value 2974145.910026 after 0.00 sec. (5.28 ticks)
+Probing fixed 0 vars, tightened 46 bounds.
+Probing time = 0.00 sec. (0.43 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 502 rows, 940 columns, and 3711 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (1.46 ticks)
+Probing time = 0.00 sec. (0.38 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (10.79 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2974145.9100      831.0000            99.97%
+*     0+    0                       449239.5591      831.0000            99.82%
+      0     0   251078.6239    24   449239.5591   251078.6239      653   44.11%
+*     0+    0                       257839.5600   251078.6239             2.62%
+*     0     0      integral     0   251136.4642      Cuts: 54      726    0.00%
+*     0+    0                       251136.4642   251136.4642             0.00%
+      0     0        cutoff         251136.4642   251136.4642      726    0.00%
+Elapsed time = 0.14 sec. (49.11 ticks, tree = 0.01 MB, solutions = 4)
+
+Flow cuts applied:  5
+Mixed integer rounding cuts applied:  39
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.14 sec. (49.23 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.14 sec. (49.23 ticks)
+[2026-01-07 07:48:01] =============== CPLEX END =================
+
+[2026-01-07 07:48:01] [RF] 求解成功: 目标=251136.46 CPU时间=1.61s
+[2026-01-07 07:48:01] [RF] 固定周期 [13, 14)
+[2026-01-07 07:48:01] [RF] 迭代 15: k=14
+[2026-01-07 07:48:01] [RF] 子问题: k=14 W=6 (固定:[0,14) 窗口:[14,20) 放松:[20,30))
+[2026-01-07 07:48:01] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1283 rows and 1085 columns.
+Reduced MIP has 487 rows, 916 columns, and 3567 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.22 ticks)
+Found incumbent of value 2829406.485196 after 0.02 sec. (5.01 ticks)
+Probing fixed 0 vars, tightened 46 bounds.
+Probing time = 0.00 sec. (0.41 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 487 rows, 916 columns, and 3567 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.41 ticks)
+Probing time = 0.00 sec. (0.36 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.03 sec. (11.62 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2829406.4852      831.0000            99.97%
+*     0+    0                       449158.4258      831.0000            99.81%
+      0     0   251085.2531    26   449158.4258   251085.2531      726   44.10%
+*     0+    0                       257839.5600   251085.2531             2.62%
+*     0     0      integral     0   251152.8229      Cuts: 46      785    0.00%
+*     0+    0                       251152.8229   251152.8229             0.00%
+      0     0        cutoff         251152.8229   251152.8229      785    0.00%
+Elapsed time = 0.16 sec. (48.46 ticks, tree = 0.01 MB, solutions = 4)
+
+Flow cuts applied:  4
+Mixed integer rounding cuts applied:  30
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.16 sec. (48.58 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.16 sec. (48.58 ticks)
+[2026-01-07 07:48:01] =============== CPLEX END =================
+
+[2026-01-07 07:48:01] [RF] 求解成功: 目标=251152.82 CPU时间=1.52s
+[2026-01-07 07:48:01] [RF] 固定周期 [14, 15)
+[2026-01-07 07:48:01] [RF] 迭代 16: k=15
+[2026-01-07 07:48:01] [RF] 子问题: k=15 W=6 (固定:[0,15) 窗口:[15,21) 放松:[21,30))
+[2026-01-07 07:48:01] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1308 rows and 1109 columns.
+MIP Presolve modified 2 coefficients.
+Reduced MIP has 472 rows, 892 columns, and 3423 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.20 ticks)
+Found incumbent of value 2835060.240108 after 0.00 sec. (4.86 ticks)
+Probing fixed 0 vars, tightened 42 bounds.
+Probing time = 0.00 sec. (0.39 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 472 rows, 892 columns, and 3423 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.36 ticks)
+Probing time = 0.02 sec. (0.35 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (11.31 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2835060.2401      831.0000            99.97%
+*     0+    0                       449180.2550      831.0000            99.81%
+      0     0   251093.6581    26   449180.2550   251093.6581      797   44.10%
+*     0+    0                       257839.5600   251093.6581             2.62%
+      0     0   251174.4820    11   257839.5600      Cuts: 71      944    2.58%
+*     0+    0                       251174.7055   251174.4820             0.00%
+
+Flow cuts applied:  6
+Mixed integer rounding cuts applied:  25
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.22 sec. (52.60 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.22 sec. (52.60 ticks)
+[2026-01-07 07:48:01] =============== CPLEX END =================
+
+[2026-01-07 07:48:01] [RF] 求解成功: 目标=251174.71 CPU时间=2.56s
+[2026-01-07 07:48:01] [RF] 固定周期 [15, 16)
+[2026-01-07 07:48:01] [RF] 迭代 17: k=16
+[2026-01-07 07:48:01] [RF] 子问题: k=16 W=6 (固定:[0,16) 窗口:[16,22) 放松:[22,30))
+[2026-01-07 07:48:01] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1333 rows and 1133 columns.
+MIP Presolve modified 4 coefficients.
+Reduced MIP has 457 rows, 868 columns, and 3279 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.18 ticks)
+Found incumbent of value 2856548.611539 after 0.00 sec. (4.72 ticks)
+Probing fixed 0 vars, tightened 40 bounds.
+Probing time = 0.00 sec. (0.37 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 457 rows, 868 columns, and 3279 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.31 ticks)
+Probing time = 0.00 sec. (0.33 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (8.62 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2856548.6115      831.0000            99.97%
+*     0+    0                       449223.1150      831.0000            99.82%
+      0     0   251103.2353    25   449223.1150   251103.2353      665   44.10%
+*     0+    0                       258178.5600   251103.2353             2.74%
+      0     0   251205.5793    17   258178.5600     Cuts: 159      810    2.70%
+*     0+    0                       251213.9093   251205.5793             0.00%
+
+Implied bound cuts applied:  1
+Flow cuts applied:  18
+Mixed integer rounding cuts applied:  38
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.19 sec. (48.88 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.19 sec. (48.88 ticks)
+[2026-01-07 07:48:01] =============== CPLEX END =================
+
+[2026-01-07 07:48:01] [RF] 求解成功: 目标=251213.91 CPU时间=1.67s
+[2026-01-07 07:48:01] [RF] 固定周期 [16, 17)
+[2026-01-07 07:48:01] [RF] 迭代 18: k=17
+[2026-01-07 07:48:01] [RF] 子问题: k=17 W=6 (固定:[0,17) 窗口:[17,23) 放松:[23,30))
+[2026-01-07 07:48:01] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1358 rows and 1157 columns.
+MIP Presolve modified 6 coefficients.
+Reduced MIP has 442 rows, 844 columns, and 3135 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.16 ticks)
+Found incumbent of value 2901148.741601 after 0.02 sec. (4.59 ticks)
+Probing fixed 0 vars, tightened 39 bounds.
+Probing time = 0.00 sec. (0.35 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 442 rows, 844 columns, and 3135 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.27 ticks)
+Probing time = 0.00 sec. (0.31 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (8.91 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2901148.7416      831.0000            99.97%
+*     0+    0                       449263.5047      831.0000            99.82%
+      0     0   251114.2495    26   449263.5047   251114.2495      660   44.11%
+*     0+    0                       258517.5600   251114.2495             2.86%
+      0     0   251247.6955    17   258517.5600     Cuts: 167      817    2.81%
+*     0+    0                       251321.3050   251247.6955             0.03%
+      0     0   251251.7988    17   251321.3050      Cuts: 89      898    0.03%
+      0     0   251256.0342    17   251321.3050      Cuts: 91      942    0.03%
+
+Implied bound cuts applied:  1
+Flow cuts applied:  48
+Mixed integer rounding cuts applied:  104
+Lift and project cuts applied:  2
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.36 sec. (134.02 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.36 sec. (134.02 ticks)
+[2026-01-07 07:48:02] =============== CPLEX END =================
+
+[2026-01-07 07:48:02] [RF] 求解成功: 目标=251321.31 CPU时间=4.41s
+[2026-01-07 07:48:02] [RF] 固定周期 [17, 18)
+[2026-01-07 07:48:02] [RF] 迭代 19: k=18
+[2026-01-07 07:48:02] [RF] 子问题: k=18 W=6 (固定:[0,18) 窗口:[18,24) 放松:[24,30))
+[2026-01-07 07:48:02] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1383 rows and 1181 columns.
+MIP Presolve modified 8 coefficients.
+Reduced MIP has 427 rows, 820 columns, and 2991 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.14 ticks)
+Found incumbent of value 2901320.249330 after 0.02 sec. (4.45 ticks)
+Probing fixed 0 vars, tightened 35 bounds.
+Probing time = 0.00 sec. (0.32 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 427 rows, 820 columns, and 2991 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.22 ticks)
+Probing time = 0.00 sec. (0.29 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (8.71 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2901320.2493      831.0000            99.97%
+*     0+    0                       449362.1268      831.0000            99.82%
+      0     0   251127.0530    27   449362.1268   251127.0530      679   44.11%
+*     0+    0                       314886.2898   251127.0530            20.25%
+      0     0   251299.1156    17   314886.2898     Cuts: 178      823   20.19%
+*     0+    0                       251659.6744   251299.1156             0.14%
+      0     0   251315.2868    17   251659.6744      Cuts: 93      913    0.14%
+      0     0   251321.9014    17   251659.6744     Cuts: 112      999    0.13%
+      0     0   251323.6250    17   251659.6744     Cuts: 107     1054    0.13%
+*     0+    0                       251434.6896   251323.6250             0.04%
+*     0+    0                       251375.2401   251323.6250             0.02%
+*     0+    0                       251372.0781   251323.6250             0.02%
+
+Implied bound cuts applied:  1
+Flow cuts applied:  41
+Mixed integer rounding cuts applied:  106
+Lift and project cuts applied:  2
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.31 sec. (154.84 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.31 sec. (154.84 ticks)
+[2026-01-07 07:48:02] =============== CPLEX END =================
+
+[2026-01-07 07:48:02] [RF] 求解成功: 目标=251372.08 CPU时间=1.89s
+[2026-01-07 07:48:02] [RF] 固定周期 [18, 19)
+[2026-01-07 07:48:02] [RF] 迭代 20: k=19
+[2026-01-07 07:48:02] [RF] 子问题: k=19 W=6 (固定:[0,19) 窗口:[19,25) 放松:[25,30))
+[2026-01-07 07:48:02] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1408 rows and 1205 columns.
+MIP Presolve modified 10 coefficients.
+Reduced MIP has 412 rows, 796 columns, and 2847 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.12 ticks)
+Found incumbent of value 2901397.357058 after 0.02 sec. (4.32 ticks)
+Probing fixed 0 vars, tightened 33 bounds.
+Probing time = 0.00 sec. (0.30 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 412 rows, 796 columns, and 2847 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.17 ticks)
+Probing time = 0.00 sec. (0.27 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (8.70 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2901397.3571      831.0000            99.97%
+*     0+    0                       449683.0341      831.0000            99.82%
+      0     0   251142.1089    29   449683.0341   251142.1089      625   44.15%
+*     0+    0                       381652.3973   251142.1089            34.20%
+      0     0   251361.5314    17   381652.3973      Cuts: 74      805   34.14%
+*     0+    0                       380596.1073   251361.5314            33.96%
+      0     0   251387.4663    18   380596.1073     Cuts: 118     1031   33.95%
+*     0+    0                       251407.9750   251387.4663             0.01%
+
+Implied bound cuts applied:  1
+Flow cuts applied:  14
+Mixed integer rounding cuts applied:  20
+Lift and project cuts applied:  3
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.20 sec. (69.32 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.20 sec. (69.32 ticks)
+[2026-01-07 07:48:02] =============== CPLEX END =================
+
+[2026-01-07 07:48:02] [RF] 求解成功: 目标=251407.97 CPU时间=1.80s
+[2026-01-07 07:48:02] [RF] 固定周期 [19, 20)
+[2026-01-07 07:48:02] [RF] 迭代 21: k=20
+[2026-01-07 07:48:02] [RF] 子问题: k=20 W=6 (固定:[0,20) 窗口:[20,26) 放松:[26,30))
+[2026-01-07 07:48:02] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1433 rows and 1229 columns.
+MIP Presolve modified 11 coefficients.
+Reduced MIP has 397 rows, 772 columns, and 2702 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.10 ticks)
+Found incumbent of value 2901359.414786 after 0.02 sec. (4.18 ticks)
+Probing fixed 0 vars, tightened 31 bounds.
+Probing time = 0.00 sec. (0.29 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 397 rows, 772 columns, and 2702 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.12 ticks)
+Probing time = 0.00 sec. (0.25 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (7.32 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2901359.4148      831.0000            99.97%
+*     0+    0                       522924.2740      831.0000            99.84%
+      0     0   251160.0785    29   522924.2740   251160.0785      605   51.97%
+*     0+    0                       522461.5740   251160.0785            51.93%
+      0     0   251433.2652    21   522461.5740     Cuts: 178      769   51.88%
+*     0+    0                       251470.4988   251433.2652             0.01%
+      0     0   251437.9909    20   251470.4988      Cuts: 97      853    0.01%
+      0     0   251441.8565    22   251470.4988      Cuts: 54      939    0.01%
+*     0+    0                       251470.4987   251441.8565             0.01%
+
+Implied bound cuts applied:  2
+Flow cuts applied:  36
+Mixed integer rounding cuts applied:  70
+Lift and project cuts applied:  2
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.25 sec. (93.07 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.25 sec. (93.07 ticks)
+[2026-01-07 07:48:02] =============== CPLEX END =================
+
+[2026-01-07 07:48:02] [RF] 求解成功: 目标=251470.50 CPU时间=2.06s
+[2026-01-07 07:48:02] [RF] 固定周期 [20, 21)
+[2026-01-07 07:48:02] [RF] 迭代 22: k=21
+[2026-01-07 07:48:02] [RF] 子问题: k=21 W=6 (固定:[0,21) 窗口:[21,27) 放松:[27,30))
+[2026-01-07 07:48:02] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1459 rows and 1256 columns.
+MIP Presolve modified 11 coefficients.
+Reduced MIP has 381 rows, 745 columns, and 2541 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.07 ticks)
+Found incumbent of value 2901467.912514 after 0.02 sec. (4.04 ticks)
+Probing fixed 0 vars, tightened 29 bounds.
+Probing time = 0.00 sec. (0.26 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 381 rows, 745 columns, and 2541 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.07 ticks)
+Probing time = 0.00 sec. (0.23 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (7.77 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2901467.9125      831.0000            99.97%
+*     0+    0                       669405.1389      831.0000            99.88%
+      0     0   251184.1090    29   669405.1389   251184.1090      674   62.48%
+*     0+    0                       669099.3489   251184.1090            62.46%
+      0     0   251506.6111    26   669099.3489     Cuts: 175      905   62.41%
+*     0+    0                       251618.6745   251506.6111             0.04%
+      0     0   251526.3479    27   251618.6745     Cuts: 110     1005    0.04%
+      0     0   251534.1280    28   251618.6745     Cuts: 112     1115    0.03%
+      0     0   251539.5365    27   251618.6745     Cuts: 103     1199    0.03%
+*     0+    0                       251591.0412   251539.5365             0.02%
+
+Implied bound cuts applied:  2
+Flow cuts applied:  56
+Mixed integer rounding cuts applied:  148
+Lift and project cuts applied:  2
+Gomory fractional cuts applied:  4
+
+Root node processing (before b&c):
+  Real time             =    0.30 sec. (96.62 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.30 sec. (96.62 ticks)
+[2026-01-07 07:48:03] =============== CPLEX END =================
+
+[2026-01-07 07:48:03] [RF] 求解成功: 目标=251591.04 CPU时间=3.33s
+[2026-01-07 07:48:03] [RF] 固定周期 [21, 22)
+[2026-01-07 07:48:03] [RF] 迭代 23: k=22
+[2026-01-07 07:48:03] [RF] 子问题: k=22 W=6 (固定:[0,22) 窗口:[22,28) 放松:[28,30))
+[2026-01-07 07:48:03] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1485 rows and 1283 columns.
+MIP Presolve modified 11 coefficients.
+Reduced MIP has 365 rows, 718 columns, and 2380 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.05 ticks)
+Found incumbent of value 2901411.950242 after 0.00 sec. (3.88 ticks)
+Probing fixed 0 vars, tightened 26 bounds.
+Probing time = 0.00 sec. (0.24 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 365 rows, 718 columns, and 2380 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.02 ticks)
+Probing time = 0.00 sec. (0.21 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (6.60 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2901411.9502      831.0000            99.97%
+*     0+    0                       256675.0800      831.0000            99.68%
+*     0+    0                       256292.0800      831.0000            99.68%
+      0     0   251226.9159    29   256292.0800   251226.9159      596    1.98%
+*     0+    0                       251934.9736   251226.9159             0.28%
+      0     0   251658.9368    26   251934.9736     Cuts: 159      732    0.11%
+      0     0   251680.4675    27   251934.9736     Cuts: 125      840    0.10%
+      0     0   251693.2762    26   251934.9736     Cuts: 117      919    0.10%
+      0     0   251697.2066    27   251934.9736      Cuts: 83      965    0.09%
+      0     0   251699.9474    27   251934.9736      Cuts: 81     1007    0.09%
+Detecting symmetries...
+*     0+    0                       251837.2621   251699.9474             0.05%
+*     0+    0                       251837.2621   251699.9474             0.05%
+
+Implied bound cuts applied:  2
+Flow cuts applied:  47
+Mixed integer rounding cuts applied:  123
+Lift and project cuts applied:  3
+Gomory fractional cuts applied:  5
+
+Root node processing (before b&c):
+  Real time             =    0.31 sec. (136.44 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.31 sec. (136.44 ticks)
+[2026-01-07 07:48:03] =============== CPLEX END =================
+
+[2026-01-07 07:48:03] [RF] 求解成功: 目标=251837.26 CPU时间=2.02s
+[2026-01-07 07:48:03] [RF] 固定周期 [22, 23)
+[2026-01-07 07:48:03] [RF] 迭代 24: k=23
+[2026-01-07 07:48:03] [RF] 子问题: k=23 W=6 (固定:[0,23) 窗口:[23,29) 放松:[29,30))
+[2026-01-07 07:48:03] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1509 rows and 1304 columns.
+MIP Presolve modified 13 coefficients.
+Reduced MIP has 351 rows, 697 columns, and 2250 nonzeros.
+Reduced MIP has 57 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.01 ticks)
+Found incumbent of value 2900896.010952 after 0.00 sec. (3.84 ticks)
+Probing fixed 0 vars, tightened 28 bounds.
+Probing time = 0.00 sec. (0.21 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+MIP Presolve modified 8 coefficients.
+Reduced MIP has 351 rows, 697 columns, and 2250 nonzeros.
+Reduced MIP has 57 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.98 ticks)
+Probing time = 0.00 sec. (0.19 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.00 sec. (4.30 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2900896.0110     1067.0000            99.96%
+*     0+    0                       255961.0800     1067.0000            99.58%
+      0     0   251374.8541    30   255961.0800   251374.8541      468    1.79%
+*     0+    0                       252324.2128   251374.8541             0.38%
+      0     0   251907.0108    26   252324.2128     Cuts: 157      622    0.17%
+*     0+    0                       252292.3056   251907.0108             0.15%
+      0     0   251923.0416    29   252292.3056      Cuts: 84      743    0.15%
+      0     0   251925.2353    28   252292.3056     Cuts: 103      950    0.15%
+      0     0   251925.2353    27   252292.3056      Cuts: 31      997    0.15%
+*     0+    0                       252013.5149   251925.2353             0.04%
+
+Implied bound cuts applied:  1
+Flow cuts applied:  33
+Mixed integer rounding cuts applied:  43
+Lift and project cuts applied:  3
+Gomory fractional cuts applied:  2
+
+Root node processing (before b&c):
+  Real time             =    0.39 sec. (102.93 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.39 sec. (102.93 ticks)
+[2026-01-07 07:48:04] =============== CPLEX END =================
+
+[2026-01-07 07:48:04] [RF] 求解成功: 目标=252013.51 CPU时间=4.50s
+[2026-01-07 07:48:04] [RF] 固定周期 [23, 24)
+[2026-01-07 07:48:04] [RF] 迭代 25: k=24
+[2026-01-07 07:48:04] [RF] 子问题: k=24 W=6 (固定:[0,24) 窗口:[24,30) 放松:[30,30))
+[2026-01-07 07:48:04] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1537 rows and 1333 columns.
+MIP Presolve modified 15 coefficients.
+Reduced MIP has 333 rows, 668 columns, and 2072 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.05 ticks)
+Found incumbent of value 2896151.729779 after 0.02 sec. (3.65 ticks)
+Probing fixed 0 vars, tightened 14 bounds.
+Probing time = 0.00 sec. (0.18 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 333 rows, 668 columns, and 2072 nonzeros.
+Reduced MIP has 56 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.91 ticks)
+Probing time = 0.00 sec. (0.17 ticks)
+Clique table members: 9.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.00 sec. (4.45 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2896151.7298     1067.0000            99.96%
+*     0+    0                       986189.3671     1067.0000            99.89%
+      0     0   251406.7523    23   986189.3671   251406.7523      442   74.51%
+*     0+    0                       701407.1200   251406.7523            64.16%
+      0     0   252027.1394    30   701407.1200     Cuts: 118      621   64.07%
+*     0+    0                       608541.3400   252027.1394            58.59%
+      0     0   252051.6901    31   608541.3400     Cuts: 124      897   58.58%
+      0     0   252053.1883    32   608541.3400     Cuts: 120     1027   58.58%
+      0     0   252060.6145    29   608541.3400      Cuts: 81     1210   58.58%
+*     0+    0                       317850.6545   252060.6145            20.70%
+*     0+    0                       252718.7500   252060.6145             0.26%
+*     0+    0                       252333.8300   252060.6145             0.11%
+
+Flow cuts applied:  13
+Mixed integer rounding cuts applied:  28
+Lift and project cuts applied:  2
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.47 sec. (104.28 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.47 sec. (104.28 ticks)
+[2026-01-07 07:48:04] =============== CPLEX END =================
+
+[2026-01-07 07:48:04] [RF] 求解成功: 目标=252333.83 CPU时间=6.11s
+[2026-01-07 07:48:04] [RF] 固定周期 [24, 25)
+[2026-01-07 07:48:04] [RF] 迭代 26: k=25
+[2026-01-07 07:48:04] [RF] 子问题: k=25 W=6 (固定:[0,25) 窗口:[25,30) 放松:[30,30))
+[2026-01-07 07:48:04] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1563 rows and 1361 columns.
+MIP Presolve modified 13 coefficients.
+Reduced MIP has 317 rows, 640 columns, and 1905 nonzeros.
+Reduced MIP has 46 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.00 ticks)
+Found incumbent of value 2896373.249779 after 0.02 sec. (3.56 ticks)
+Probing fixed 0 vars, tightened 18 bounds.
+Probing time = 0.00 sec. (0.14 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 317 rows, 640 columns, and 1905 nonzeros.
+Reduced MIP has 46 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.84 ticks)
+Probing time = 0.00 sec. (0.13 ticks)
+Clique table members: 8.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (3.68 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2896373.2498     1067.0000            99.96%
+*     0+    0                       256058.1800     1067.0000            99.58%
+      0     0   251448.0866    19   256058.1800   251448.0866      437    1.80%
+*     0+    0                       252726.9200   251448.0866             0.51%
+      0     0   252035.0737    20   252726.9200     Cuts: 111      583    0.27%
+*     0+    0                       252691.7100   252035.0737             0.26%
+      0     0   252089.1999    24   252691.7100      Cuts: 95      748    0.24%
+      0     0   252100.4895    24   252691.7100      Cuts: 84      836    0.23%
+      0     0   252104.7665    26   252691.7100      Cuts: 37      873    0.23%
+      0     0   252107.9315    16   252691.7100      Cuts: 31      913    0.23%
+Detecting symmetries...
+      0     0   252112.8381    22   252691.7100      Cuts: 44      955    0.23%
+*     0+    0                       252375.3400   252112.8381             0.10%
+*     0+    0                       252353.1800   252112.8381             0.10%
+
+Flow cuts applied:  6
+Mixed integer rounding cuts applied:  38
+Lift and project cuts applied:  3
+Gomory fractional cuts applied:  5
+
+Root node processing (before b&c):
+  Real time             =    0.28 sec. (83.54 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.28 sec. (83.54 ticks)
+[2026-01-07 07:48:04] =============== CPLEX END =================
+
+[2026-01-07 07:48:04] [RF] 求解成功: 目标=252353.18 CPU时间=2.73s
+[2026-01-07 07:48:04] [RF] 固定周期 [25, 26)
+[2026-01-07 07:48:04] [RF] 迭代 27: k=26
+[2026-01-07 07:48:04] [RF] 子问题: k=26 W=6 (固定:[0,26) 窗口:[26,30) 放松:[30,30))
+[2026-01-07 07:48:04] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 1 time.
+MIP Presolve eliminated 1589 rows and 1389 columns.
+MIP Presolve modified 11 coefficients.
+Reduced MIP has 301 rows, 612 columns, and 1738 nonzeros.
+Reduced MIP has 36 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.96 ticks)
+Found incumbent of value 2896582.489779 after 0.00 sec. (3.47 ticks)
+Probing fixed 0 vars, tightened 16 bounds.
+Probing time = 0.00 sec. (0.11 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 301 rows, 612 columns, and 1738 nonzeros.
+Reduced MIP has 36 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (0.77 ticks)
+Probing time = 0.00 sec. (0.10 ticks)
+Clique table members: 7.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.00 sec. (3.37 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2896582.4898     1067.0000            99.96%
+*     0+    0                       254562.2300     1067.0000            99.58%
+      0     0   251524.4695    15   254562.2300   251524.4695      416    1.19%
+*     0+    0                       252613.9345   251524.4695             0.43%
+      0     0   252053.6734    16   252613.9345      Cuts: 81      548    0.22%
+*     0+    0                       252460.6800   252053.6734             0.16%
+      0     0   252100.2641    19   252460.6800      Cuts: 57      630    0.14%
+*     0+    0                       252401.3400   252100.2641             0.12%
+      0     0   252107.5058    18   252401.3400      Cuts: 60      669    0.12%
+      0     0   252114.0605    16   252401.3400      Cuts: 72      716    0.11%
+*     0+    0                       252375.3000   252114.0605             0.10%
+*     0+    0                       252333.8300   252114.0605             0.09%
+
+Clique cuts applied:  1
+Flow cuts applied:  16
+Mixed integer rounding cuts applied:  31
+Zero-half cuts applied:  2
+Lift and project cuts applied:  4
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.17 sec. (54.35 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.17 sec. (54.35 ticks)
+[2026-01-07 07:48:05] =============== CPLEX END =================
+
+[2026-01-07 07:48:05] [RF] 求解成功: 目标=252333.83 CPU时间=2.12s
+[2026-01-07 07:48:05] [RF] 固定周期 [26, 27)
+[2026-01-07 07:48:05] [RF] 迭代 28: k=27
+[2026-01-07 07:48:05] [RF] 子问题: k=27 W=6 (固定:[0,27) 窗口:[27,30) 放松:[30,30))
+[2026-01-07 07:48:05] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 2 times.
+MIP Presolve eliminated 1621 rows and 1423 columns.
+MIP Presolve modified 9 coefficients.
+Aggregator did 2 substitutions.
+Reduced MIP has 277 rows, 578 columns, and 1555 nonzeros.
+Reduced MIP has 26 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (2.35 ticks)
+Found incumbent of value 2896680.639779 after 0.02 sec. (3.81 ticks)
+Probing fixed 0 vars, tightened 15 bounds.
+Probing time = 0.00 sec. (0.08 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 277 rows, 578 columns, and 1555 nonzeros.
+Reduced MIP has 26 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.69 ticks)
+Probing time = 0.00 sec. (0.07 ticks)
+Clique table members: 6.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.02 sec. (1.88 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2896680.6398     6028.3000            99.79%
+*     0+    0                       253761.1500     6028.3000            97.62%
+      0     0   251667.7315    12   253761.1500   251667.7315      150    0.82%
+*     0+    0                       252375.3400   251867.7857             0.20%
+      0     0   252120.6603    12   252375.3400      Cuts: 70      204    0.10%
+      0     0   252143.5111    11   252375.3400      Cuts: 54      259    0.09%
+      0     0   252157.6524    10   252375.3400      Cuts: 36      301    0.09%
+      0     0   252159.5085    12   252375.3400      Cuts: 16      311    0.09%
+      0     0   252160.4792    10   252375.3400      Cuts: 11      324    0.09%
+*     0+    0                       252375.3000   252160.4792             0.09%
+Detecting symmetries...
+*     0+    0                       252348.6200   252160.4792             0.07%
+*     0+    0                       252333.8300   252160.4792             0.07%
+      0     0        cutoff         252333.8300   252333.8300      324    0.00%
+Elapsed time = 0.16 sec. (43.17 ticks, tree = 0.01 MB, solutions = 6)
+
+Flow cuts applied:  7
+Mixed integer rounding cuts applied:  16
+Multi commodity flow cuts applied:  1
+Lift and project cuts applied:  2
+Gomory fractional cuts applied:  2
+
+Root node processing (before b&c):
+  Real time             =    0.16 sec. (43.30 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.16 sec. (43.30 ticks)
+[2026-01-07 07:48:05] =============== CPLEX END =================
+
+[2026-01-07 07:48:05] [RF] 求解成功: 目标=252333.83 CPU时间=1.45s
+[2026-01-07 07:48:05] [RF] 固定周期 [27, 28)
+[2026-01-07 07:48:05] [RF] 迭代 29: k=28
+[2026-01-07 07:48:05] [RF] 子问题: k=28 W=6 (固定:[0,28) 窗口:[28,30) 放松:[30,30))
+[2026-01-07 07:48:05] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 2 times.
+MIP Presolve eliminated 1645 rows and 1445 columns.
+MIP Presolve modified 7 coefficients.
+Aggregator did 2 substitutions.
+Reduced MIP has 263 rows, 556 columns, and 1421 nonzeros.
+Reduced MIP has 17 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.28 ticks)
+Found incumbent of value 2896198.229779 after 0.00 sec. (3.72 ticks)
+Probing fixed 0 vars, tightened 9 bounds.
+Probing time = 0.00 sec. (0.05 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 263 rows, 556 columns, and 1421 nonzeros.
+Reduced MIP has 17 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.63 ticks)
+Probing time = 0.00 sec. (0.04 ticks)
+Clique table members: 5.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.00 sec. (1.82 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2896198.2298     6411.3000            99.78%
+*     0+    0                       410876.2445     6411.3000            98.44%
+      0     0   251940.5881     7   410876.2445   251940.5881      135   38.68%
+*     0+    0                       318010.4645   251940.5881            20.78%
+      0     0   252173.2682     8   318010.4645      Cuts: 42      193   20.70%
+*     0+    0                       252375.3400   252173.2682             0.08%
+      0     0   252195.5926     9   252375.3400      Cuts: 46      226    0.07%
+      0     0   252197.1852     8   252375.3400      Cuts: 44      244    0.07%
+*     0+    0                       252375.3000   252197.1852             0.07%
+      0     0   252197.2064     9   252375.3000       Cuts: 7      245    0.07%
+*     0+    0                       252333.8300   252197.2064             0.05%
+      0     0        cutoff         252333.8300   252333.8300      245    0.00%
+Elapsed time = 0.25 sec. (30.84 ticks, tree = 0.01 MB, solutions = 6)
+
+Implied bound cuts applied:  1
+Flow cuts applied:  6
+Mixed integer rounding cuts applied:  15
+Multi commodity flow cuts applied:  1
+Lift and project cuts applied:  1
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.25 sec. (30.97 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.25 sec. (30.97 ticks)
+[2026-01-07 07:48:05] =============== CPLEX END =================
+
+[2026-01-07 07:48:05] [RF] 求解成功: 目标=252333.83 CPU时间=3.27s
+[2026-01-07 07:48:05] [RF] 固定周期 [28, 29)
+[2026-01-07 07:48:05] [RF] 迭代 30: k=29
+[2026-01-07 07:48:05] [RF] 子问题: k=29 W=6 (固定:[0,29) 窗口:[29,30) 放松:[30,30))
+[2026-01-07 07:48:05] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 2 times.
+MIP Presolve eliminated 1674 rows and 1471 columns.
+MIP Presolve modified 3 coefficients.
+Aggregator did 6 substitutions.
+Reduced MIP has 240 rows, 526 columns, and 1282 nonzeros.
+Reduced MIP has 6 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.25 ticks)
+Found incumbent of value 2776290.280867 after 0.02 sec. (3.66 ticks)
+Probing fixed 0 vars, tightened 10 bounds.
+Probing time = 0.00 sec. (0.02 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 240 rows, 526 columns, and 1282 nonzeros.
+Reduced MIP has 6 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.56 ticks)
+Probing time = 0.00 sec. (0.02 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.00 sec. (0.86 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                      2776290.2809    15737.5200            99.43%
+*     0+    0                       345166.5700    15737.5200            95.44%
+      0     0   252323.2000     1   345166.5700   252323.2000       69   26.90%
+*     0+    0                       252333.8300   252323.2000             0.00%
+
+Root node processing (before b&c):
+  Real time             =    0.02 sec. (6.61 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.02 sec. (6.61 ticks)
+[2026-01-07 07:48:05] =============== CPLEX END =================
+
+[2026-01-07 07:48:05] [RF] 求解成功: 目标=252333.83 CPU时间=0.06s
+[2026-01-07 07:48:05] [RF] 固定周期 [29, 30)
+[2026-01-07 07:48:05] [RF] 最终求解（固定所有y,lambda）...
+[2026-01-07 07:48:05] [RF] 子问题: k=30 W=0 (固定:[0,30) 窗口:[30,30) 放松:[30,30))
+[2026-01-07 07:48:05] 
+=============== CPLEX START ===============
+Version identifier: 22.1.0.0 | 2022-03-09 | 1a383f8ce
+CPXPARAM_MIP_Strategy_File                       3
+CPXPARAM_TimeLimit                               60
+CPXPARAM_WorkMem                                 4096
+CPXPARAM_WorkDir                                 "D:/CPLEX_Temp"
+Tried aggregator 2 times.
+MIP Presolve eliminated 1686 rows and 1486 columns.
+Aggregator did 5 substitutions.
+Reduced MIP has 239 rows, 512 columns, and 1201 nonzeros.
+Reduced MIP has 23 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.16 ticks)
+Found incumbent of value 564975.290000 after 0.02 sec. (3.75 ticks)
+Probing time = 0.00 sec. (0.02 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 239 rows, 512 columns, and 1201 nonzeros.
+Reduced MIP has 23 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.56 ticks)
+Probing time = 0.00 sec. (0.02 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 20 threads.
+Root relaxation solution time = 0.00 sec. (0.68 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                       564975.2900    16076.5200            97.15%
+*     0     0      integral     0   252333.8300   252333.8300       48    0.00%
+Elapsed time = 0.02 sec. (5.62 ticks, tree = 0.00 MB, solutions = 2)
+
+Root node processing (before b&c):
+  Real time             =    0.02 sec. (5.70 ticks)
+Parallel b&c, 20 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.02 sec. (5.70 ticks)
+[2026-01-07 07:48:05] =============== CPLEX END =================
+
+[2026-01-07 07:48:05] [RF] 求解成功: 目标=252333.83 CPU时间=0.06s
+[2026-01-07 07:48:05] [RF] 总启动数: 6，总跨期数: 29
+[2026-01-07 07:48:05] [RF] 算法完成
+[2026-01-07 07:48:05] [RF] 总迭代: 30
+[2026-01-07 07:48:05] [RF] 总耗时: 10.719s
+[2026-01-07 07:48:05] [RF] CPU时间: 97.516s
+[2026-01-07 07:48:05] [RF] 最终目标: 252333.83
+[2026-01-07 07:48:05] 
+========================================
+[2026-01-07 07:48:05]   求解结果汇总
+[2026-01-07 07:48:05] ========================================
+[2026-01-07 07:48:05]   算法:     RF
+[2026-01-07 07:48:05]   目标值:   252333.83
+[2026-01-07 07:48:05]   求解时间: 10.719s
+[2026-01-07 07:48:05]   总耗时:   10.720s
+[2026-01-07 07:48:05]   Gap:      0.0000
+[2026-01-07 07:48:05] ========================================
+[2026-01-07 07:48:05] [保存] 结果已保存: D:/YM-Code/LS-NTGF-GUI/results/rf_result_20260107_074805_669.csv
+[2026-01-07 07:48:05] [完成] 总耗时=10.720s
+[2026-01-07 07:48:05] [系统] 程序正常退出
