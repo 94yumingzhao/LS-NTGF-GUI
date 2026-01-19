@@ -48,6 +48,12 @@ public:
     double GetRRCapacity() const;
     double GetRRBonus() const;
 
+    // LR parameters
+    int GetLRMaxIter() const;
+    double GetLRAlpha0() const;
+    double GetLRDecay() const;
+    double GetLRTol() const;
+
 signals:
     void AlgorithmChanged(int index);
 
@@ -92,6 +98,13 @@ private:
     QGroupBox* rr_group_;
     QDoubleSpinBox* rr_capacity_spin_;
     QDoubleSpinBox* rr_bonus_spin_;
+
+    // LR parameters
+    QGroupBox* lr_group_;
+    QSpinBox* lr_maxiter_spin_;
+    QDoubleSpinBox* lr_alpha0_spin_;
+    QDoubleSpinBox* lr_decay_spin_;
+    QDoubleSpinBox* lr_tol_spin_;
 };
 
 #endif  // PARAMETER_WIDGET_H_
