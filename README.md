@@ -35,7 +35,7 @@
 
 LS-NTGF-GUI 是 LS-NTGF-All 求解器的图形用户界面，提供:
 
-- 可视化的参数配置和算法选择 (RF/RFO/RR)
+- 可视化的参数配置和算法选择 (RF/RFO/RR/LR)
 - 实时的多阶段求解进度监控
 - 算例生成与难度控制
 - 求解结果的可视化分析
@@ -47,6 +47,7 @@ LS-NTGF-GUI 是 LS-NTGF-All 求解器的图形用户界面，提供:
 - RF: Relax-and-Fix 时间分解
 - RFO: RF + Fix-and-Optimize 局部搜索
 - RR: Relax-and-Recover 三阶段分解
+- LR: Lagrangian Relaxation 拉格朗日松弛 (提供下界)
 
 ### 1.3 关联项目
 
@@ -92,6 +93,7 @@ LS-NTGF-GUI 是 LS-NTGF-All 求解器的图形用户界面，提供:
 - RF: 快速启发式
 - RFO: RF + 局部优化
 - RR: 三阶段分解
+- LR: 拉格朗日松弛 (提供下界和上界)
 
 **参数配置**:
 - CPLEX 时限
@@ -272,5 +274,5 @@ D:\Tools-DV\Qt\6.10.1\msvc2022_64\bin\windeployqt.exe build/vs2022/bin/Release/L
 
 ---
 
-**文档版本**: 1.0
-**更新日期**: 2026-01-11
+**文档版本**: 2.1
+**更新日期**: 2026-01-19

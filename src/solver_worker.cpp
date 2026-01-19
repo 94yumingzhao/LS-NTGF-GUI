@@ -35,7 +35,12 @@ SolverWorker::SolverWorker(QObject* parent)
     , fo_time_(30.0)
     // RR defaults
     , rr_capacity_(1.2)
-    , rr_bonus_(50.0) {
+    , rr_bonus_(50.0)
+    // LR defaults
+    , lr_max_iter_(200)
+    , lr_alpha0_(2.0)
+    , lr_decay_(0.98)
+    , lr_tol_(0.01) {
 }
 
 SolverWorker::~SolverWorker() {
@@ -86,6 +91,13 @@ void SolverWorker::SetRRParameters(double capacity, double bonus) {
     rr_bonus_ = bonus;
 }
 
+void SolverWorker::SetLRParameters(int max_iter, double alpha0, double decay, double tol) {
+    lr_max_iter_ = max_iter;
+    lr_alpha0_ = alpha0;
+    lr_decay_ = decay;
+    lr_tol_ = tol;
+}
+
 void SolverWorker::SetCplexParameters(const QString& workdir, int workmem, int threads) {
     cplex_workdir_ = workdir;
     cplex_workmem_ = workmem;
@@ -105,6 +117,7 @@ QString SolverWorker::GetAlgorithmName() const {
         case AlgorithmType::RF:  return "RF";
         case AlgorithmType::RFO: return "RFO";
         case AlgorithmType::RR:  return "RR";
+        case AlgorithmType::LR:  return "LR";
         default: return "RF";
     }
 }
@@ -220,6 +233,14 @@ void SolverWorker::RunOptimization() {
     if (algorithm_ == AlgorithmType::RR) {
         args << "--rr-capacity" << QString::number(rr_capacity_, 'f', 2);
         args << "--rr-bonus" << QString::number(rr_bonus_, 'f', 1);
+    }
+
+    // LR parameters (for LR algorithm only)
+    if (algorithm_ == AlgorithmType::LR) {
+        args << "--lr-maxiter" << QString::number(lr_max_iter_);
+        args << "--lr-alpha0" << QString::number(lr_alpha0_, 'f', 2);
+        args << "--lr-decay" << QString::number(lr_decay_, 'f', 3);
+        args << "--lr-tol" << QString::number(lr_tol_, 'f', 4);
     }
 
     emit LogMessage(QString::fromUtf8("参数: %1").arg(args.join(" ")));

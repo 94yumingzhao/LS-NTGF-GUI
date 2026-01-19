@@ -45,6 +45,7 @@ void ParameterWidget::SetupBasicParams(QVBoxLayout* layout) {
     algorithm_combo_->addItem(QString::fromUtf8("RF  - 滚动松弛固定"), 0);
     algorithm_combo_->addItem(QString::fromUtf8("RFO - RF + 滑动窗口优化"), 1);
     algorithm_combo_->addItem(QString::fromUtf8("RR  - 三阶段分解"), 2);
+    algorithm_combo_->addItem(QString::fromUtf8("LR  - 拉格朗日松弛"), 3);
     form->addRow(QString::fromUtf8("算法"), algorithm_combo_);
 
     // CPLEX Runtime Limit
@@ -176,6 +177,39 @@ void ParameterWidget::SetupAlgorithmParams(QVBoxLayout* layout) {
     rr_form->addRow(QString::fromUtf8("连续奖励"), rr_bonus_spin_);
 
     layout->addWidget(rr_group_);
+
+    // LR Parameters Group
+    lr_group_ = new QGroupBox(QString::fromUtf8("LR参数"), this);
+    auto* lr_form = new QFormLayout(lr_group_);
+    lr_form->setLabelAlignment(Qt::AlignRight);
+
+    lr_maxiter_spin_ = new QSpinBox(lr_group_);
+    lr_maxiter_spin_->setRange(10, 1000);
+    lr_maxiter_spin_->setToolTip(QString::fromUtf8("Lagrangian Relaxation 最大迭代次数"));
+    lr_form->addRow(QString::fromUtf8("最大迭代"), lr_maxiter_spin_);
+
+    lr_alpha0_spin_ = new QDoubleSpinBox(lr_group_);
+    lr_alpha0_spin_->setRange(0.1, 10.0);
+    lr_alpha0_spin_->setDecimals(2);
+    lr_alpha0_spin_->setSingleStep(0.1);
+    lr_alpha0_spin_->setToolTip(QString::fromUtf8("初始步长因子，用于 Polyak 步长计算"));
+    lr_form->addRow(QString::fromUtf8("初始步长"), lr_alpha0_spin_);
+
+    lr_decay_spin_ = new QDoubleSpinBox(lr_group_);
+    lr_decay_spin_->setRange(0.8, 1.0);
+    lr_decay_spin_->setDecimals(3);
+    lr_decay_spin_->setSingleStep(0.01);
+    lr_decay_spin_->setToolTip(QString::fromUtf8("步长衰减系数，每次迭代乘以此系数"));
+    lr_form->addRow(QString::fromUtf8("步长衰减"), lr_decay_spin_);
+
+    lr_tol_spin_ = new QDoubleSpinBox(lr_group_);
+    lr_tol_spin_->setRange(0.001, 0.1);
+    lr_tol_spin_->setDecimals(4);
+    lr_tol_spin_->setSingleStep(0.001);
+    lr_tol_spin_->setToolTip(QString::fromUtf8("收敛容差，Gap 小于此值时终止"));
+    lr_form->addRow(QString::fromUtf8("收敛容差"), lr_tol_spin_);
+
+    layout->addWidget(lr_group_);
 }
 
 void ParameterWidget::OnAlgorithmChanged(int index) {
@@ -184,15 +218,17 @@ void ParameterWidget::OnAlgorithmChanged(int index) {
 }
 
 void ParameterWidget::UpdateParamGroupStates(int algorithmIndex) {
-    // RF: index 0, RFO: index 1, RR: index 2
+    // RF: index 0, RFO: index 1, RR: index 2, LR: index 3
     // Show only relevant parameter groups based on selected algorithm
     bool show_rf = (algorithmIndex == 0 || algorithmIndex == 1);  // RF or RFO
     bool show_fo = (algorithmIndex == 1);                          // RFO only
     bool show_rr = (algorithmIndex == 2);                          // RR only
+    bool show_lr = (algorithmIndex == 3);                          // LR only
 
     rf_group_->setVisible(show_rf);
     fo_group_->setVisible(show_fo);
     rr_group_->setVisible(show_rr);
+    lr_group_->setVisible(show_lr);
 }
 
 void ParameterWidget::ResetDefaults() {
@@ -222,6 +258,12 @@ void ParameterWidget::ResetDefaults() {
     // RR parameters
     rr_capacity_spin_->setValue(1.2);
     rr_bonus_spin_->setValue(50.0);
+
+    // LR parameters
+    lr_maxiter_spin_->setValue(200);
+    lr_alpha0_spin_->setValue(2.0);
+    lr_decay_spin_->setValue(0.98);
+    lr_tol_spin_->setValue(0.01);
 
     UpdateParamGroupStates(0);
 }
@@ -300,4 +342,21 @@ double ParameterWidget::GetRRCapacity() const {
 
 double ParameterWidget::GetRRBonus() const {
     return rr_bonus_spin_->value();
+}
+
+// LR parameter getters
+int ParameterWidget::GetLRMaxIter() const {
+    return lr_maxiter_spin_->value();
+}
+
+double ParameterWidget::GetLRAlpha0() const {
+    return lr_alpha0_spin_->value();
+}
+
+double ParameterWidget::GetLRDecay() const {
+    return lr_decay_spin_->value();
+}
+
+double ParameterWidget::GetLRTol() const {
+    return lr_tol_spin_->value();
 }
