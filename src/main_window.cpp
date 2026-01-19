@@ -234,11 +234,12 @@ void MainWindow::SetupMenuBar() {
         QMessageBox::about(this, QString::fromUtf8("\u5173\u4e8e"),
             QString::fromUtf8(
                 "LS-NTGF GUI\n\n"
-                "\u7248\u672c 2.0.0\n\n"
+                "\u7248\u672c 2.1.0\n\n"
                 "\u7b97\u6cd5:\n"
                 "  RF  - Relax-and-Fix\n"
                 "  RFO - RF + Fix-and-Optimize\n"
-                "  RR  - PP-GCB (3-stage)"));
+                "  RR  - PP-GCB (3-stage)\n"
+                "  LR  - Lagrangian Relaxation"));
     });
     help_menu->addAction(about_action);
 }
@@ -437,9 +438,15 @@ void MainWindow::OnStartOptimization() {
         param_widget_->GetRRCapacity(),
         param_widget_->GetRRBonus()
     );
+    solver_worker_->SetLRParameters(
+        param_widget_->GetLRMaxIter(),
+        param_widget_->GetLRAlpha0(),
+        param_widget_->GetLRDecay(),
+        param_widget_->GetLRTol()
+    );
     solver_worker_->SetInstanceInfo(inst_n_, inst_t_, inst_g_, inst_f_, inst_difficulty_);
 
-    QString algo_names[] = {"RF", "RFO", "RR"};
+    QString algo_names[] = {"RF", "RFO", "RR", "LR"};
     log_widget_->AppendLog(QString::fromUtf8("开始优化 (算法: %1)...")
         .arg(algo_names[algo_idx]));
     statusBar()->showMessage(QString::fromUtf8("优化中..."));

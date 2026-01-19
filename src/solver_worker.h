@@ -16,7 +16,8 @@
 enum class AlgorithmType {
     RF,   // Relax-and-Fix
     RFO,  // RF + Fix-and-Optimize
-    RR    // PP-GCB 三阶段分解
+    RR,   // PP-GCB 三阶段分解
+    LR    // Lagrangian Relaxation
 };
 
 class SolverWorker : public QObject {
@@ -38,6 +39,7 @@ public:
     void SetRFParameters(int window, int step, double time, int retries);
     void SetFOParameters(int window, int step, int rounds, int buffer, double time);
     void SetRRParameters(double capacity, double bonus);
+    void SetLRParameters(int max_iter, double alpha0, double decay, double tol);
 
     AlgorithmType GetAlgorithm() const { return algorithm_; }
 
@@ -95,6 +97,12 @@ private:
     // RR parameters
     double rr_capacity_;
     double rr_bonus_;
+
+    // LR parameters
+    int lr_max_iter_;
+    double lr_alpha0_;
+    double lr_decay_;
+    double lr_tol_;
 
     // Instance info for output filename
     int inst_n_;
